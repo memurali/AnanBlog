@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col p-5">
+        <img style="margin-left: 30%;" src="{% static 'images/error_backdrop.svg' %}" alt="">
+        <img style="margin-left: 10%; margin-top: -50%;" src="{% static 'images/error_message.svg' %}" alt="">
+
+        <h2 class="mt-4 text-center">
+            Sorry about this inconvenience.  Please click the link below to go back to our homepage.
+        </h2>
+
+        <h1 class="mt-5 text-center">
+            <a href="/home" style="color: #FFC83A !important; text-decoration: none;">
+                HOME 
+                <img src="{% static 'images/error_arrow.svg' %}" alt="">
+            </a>
+        </h1>
+    </div>
+</div>
+
+{% endblock %}

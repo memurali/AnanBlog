@@ -1,0 +1,315 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="page-title-wrap">
+       <h2 class="page-title">Cart</h2>
+    </div><!-- .page-title-wrap -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Cart</li>
+      </ol>
+    </nav><!-- .breadcrumb -->
+    <h1 class="main-entry-title">You are almost done. Please complete your checkout.</h1>
+    <div class="entry-meta">
+       <div class="cat-links">
+          <a href="#">Economic</a>
+       </div>
+    </div><!-- .enrty-meta -->
+    <div class="social-share">
+       <div class="social-label">Share:</div>
+       <div class="social-links">
+          <ul>
+             <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+             <li><a href="#"><i class="fab fa-google"></i></a></li>
+             <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+             <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+          </ul>
+       </div><!-- .social-links -->
+    </div><!-- .social-share -->
+    <div class="cart-section">
+       <h2>YOUR CART</h2>
+       <div class="row">
+          <div class="col-lg-7">
+             <div class="cart-box">
+               <table class="cart-list">
+                  {% if cartItems == False %}
+
+                     <tr>
+                        <td><h3>No Item In Your Cart</h3></td>
+                     </tr>
+                  {% else %}
+
+                     {% for item in cartItems %}
+
+                        <input type="hidden" class="setProductVal" product_id="{{item.productID.id}}" product_price="{{item.price}}" product_name="{{item.productName}}" product_type="{{item.productType}}">
+
+                        <tr class="cart-item">
+                           <td class="product-thumbnail">
+                              <a href="#"><img class="img-fluid" width="75" height="105" src="{{item.productID.image.url}}" alt=""></a>
+                           </td><!-- .product-thumbnail -->
+                           <td class="product-description">
+                              <h4 class="product-title"><a href="/publication/details/{{item.productID.id}}">{{item.productName}}</a></h4>
+                              <span>{{item.productType}}</span>
+                              <div class="product-price">
+                                 <span>Price: </span><span class="product-amount">${{item.price}}</span>
+                              </div>
+                           </td><!-- .product-description -->
+                           <td class="product-quantity-wrap">
+                              {% if item.productType != 'ebook' %}
+                                 <span class="product-quantity-box">
+                                    <span class="quantity-label">Qnt:</span>
+                                    <span class="produt-quantity" id="prd_qnt_{{item.id}}">1</span>
+                                    <input type="hidden" value="{{item.productID.stock}}" id="prd_qnt_val_{{item.productID.id}}">
+                                 </span>
+                                 <span class="product-quantity-action">
+                                    <span class="btn-wrap">
+                                       <button class="btn quantity-add" product_id="{{item.productID.id}}" item_id="{{item.id}}" product_price="{{item.price}}">+</button>
+                                       <button class="btn quantity-substract" product_id="{{item.productID.id}}" item_id="{{item.id}}">-</button>
+                                    </span>
+                                 </span>
+                              {% else %}
+
+                              <span class="quantity-label">Qnt:</span>
+                              <span class="produt-quantity" id="prd_qnt_{{item.productID.id}}">1</span>
+
+                              {% endif %}
+                           </td><!-- .product-quantity -->
+                           <td class="product-list-action">
+                              <form action="" method="post">
+                                 
+                                 {% csrf_token %}
+                                 <input type="hidden" name="remove_item" value="{{item.id}}">
+                                 <button class="btn product-list-delete">Remove</button>
+
+                              </form>
+                           </td>
+                        </tr>
+
+                     {% endfor %}
+                  {% endif %}
+               </table>
+             </div><!-- .cart-box -->
+          </div><!-- .col-lg-6 -->
+          <div class="col-lg-5">
+             <div class="form-block product-summary-block">
+                <h3>Product Summary</h3>
+                <table class="product-summary">
+                   <tbody>
+                      <tr>
+                         <td>Product Items</td>
+                         <td>{{cartSummary.productItem}}</td>
+                      </tr>
+                      <tr>
+                         <td>Product Price</td>
+                         <td>
+                           {% for price in cartSummary.productPrice %}
+                           <div id="sm_{{price.itemId}}">${{price.price}}.00</div>
+                           {% endfor %}
+                         </td>
+                      </tr>
+                      <tr>
+                         <td>Delivery</td>
+                         <td>Free</td>
+                      </tr>
+                   </tbody>
+                   <tfoot>
+                      <tr>
+                         <td>Total Cost</td>
+                         <td id="total_cost" val="{{cartSummary.tottalCost}}">${{cartSummary.tottalCost}}.00</td>
+                      </tr>
+                   </tfoot>
+                </table>
+
+
+                  <div class="form-group btn-section" id="show-payment-1">
+                     <button class="btn btn-theme btn-block">Checkout <span><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 476.213 476.213" style="enable-background:new 0 0 476.213 476.213;" xml:space="preserve">
+                     <polygon points="405.606,167.5 384.394,188.713 418.787,223.106 0,223.106 0,253.106 418.787,253.106 384.394,287.5 405.606,308.713 476.213,238.106 "/></svg></span>
+                  </button>
+                  <div id="paypal-button-container-1" class="mt-3" style="display: none;"></div>
+
+
+                  </div>
+                  <div class="form-group payment-option">
+                     <label>Accepeted Payment Method</label>
+                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                     <label class="btn">
+                     <input type="radio">
+                     <img class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/paypal_ohji3q.png" alt="paypal">
+                     </label>
+                     <label class="btn">
+                     <input type="radio">
+                     <img class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/visa_tql9cf.png" alt="visa">
+                     </label>
+                     <label class="btn">
+                     <input type="radio">
+                     <img class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/master-card_kljfmd.png" alt="master card">
+                     </label>
+                     <label class="btn">
+                     <input type="radio">
+                     <img class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/american-express_f0zuxc.png" alt="american express">
+                     </label>
+                     </div><!-- .btn-group -->
+                     </div>
+                  </div><!-- .form-group -->
+             </div><!-- .form-block -->
+          </div><!-- col-lg-6 -->
+       </div><!-- .row -->
+    </div><!-- .cart-section -->
+ </div><!-- .container -->
+
+ <!-- Include the PayPal JavaScript SDK -->
+ <script src="https://www.paypal.com/sdk/js?client-id=Aexys5OugIzjKt7o1Yhb66qjVHH__h9c1NB-mU15ErsB8y6bp7uTInF7NBDw3mTimRjjkVAUUaLEt5lc&currency=USD"></script>
+
+<script>
+   show = 0
+   $("#show-payment-1").click(function(){
+        if(show == 0){
+            $("#paypal-button-container-1").show();
+            show = 1
+        }else{
+            $("#paypal-button-container-1").hide();
+            show = 0
+        }
+    });
+
+
+    paypal.Buttons({
+
+      style: {
+         color:  'black',
+         shape:  'pill',
+         label:  'pay',
+         height: 40
+      },
+
+      createOrder: function(data, actions) {
+            return actions.order.create({
+               purchase_units: [{
+                  amount: {
+                        value: $("#total_cost").attr("val")
+                  }
+               }]
+            });
+      },
+
+      // Finalize the transaction
+      onApprove: function(data, actions) {
+         console.log(data);
+         setOrder(data.orderID);
+      }
+
+
+      }).render('#paypal-button-container-1');
+</script>
+
+ <script>
+
+    $(".quantity-add").click(function(){
+
+      prodId = $(this).attr("product_id");
+      itmId = $(this).attr("item_id");
+      itmPrice = parseInt($(this).attr("product_price"));
+      // console.log(itmPrice)
+      
+      prodStock = $("#prd_qnt_val_"+prodId).val()
+      prodQnt = $("#prd_qnt_"+itmId).text()
+      itemVal = parseInt($("#sm_"+itmId).text().replace("$", ""))
+      total = parseInt($("#total_cost").text().replace("$", ""))
+
+      // console.log(itemVal)
+
+      if (prodStock != 0){
+         $("#prd_qnt_"+itmId).text(parseInt(prodQnt)+1);
+         $("#prd_qnt_val_"+prodId).val(prodStock-1);
+         $("#sm_"+itmId).text(
+            "$"+ (itemVal + itmPrice) + ".00"
+         )
+         $("#total_cost").text(
+            "$"+ (total + itmPrice) + ".00"
+         )
+
+         $("#total_cost").attr("val", (total + itmPrice))
+      }
+
+
+    });
+
+   $(".quantity-substract").click(function(){
+
+      prodId = $(this).attr("product_id");
+      itmId = $(this).attr("item_id");
+
+      prodStock = $("#prd_qnt_val_"+prodId).val()
+      prodQnt = $("#prd_qnt_"+itmId).text()
+      itemVal = parseInt($("#sm_"+itmId).text().replace("$", ""))
+      total = parseInt($("#total_cost").text().replace("$", ""))
+
+      if (prodQnt != 0){
+         $("#prd_qnt_"+itmId).text(parseInt(prodQnt)-1);
+         $("#prd_qnt_val_"+prodId).val(parseInt(prodStock)+1);
+
+         $("#sm_"+itmId).text(
+            "$"+ (itemVal - itmPrice) + ".00"
+         )
+         $("#total_cost").text(
+            "$"+ (total - itmPrice) + ".00"
+         )
+
+         $("#total_cost").attr("val", (total - itmPrice))
+      }
+
+
+   });
+ </script>
+
+   {% csrf_token %}
+
+   <script>
+      function setOrder(orderNumber){
+         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+         values = [];
+
+         $(".setProductVal").each(function( index ) {
+
+            pdId = $(this).attr("product_id")
+
+            val = {
+               "product_name": $(this).attr("product_name"),
+               "product_id": pdId,
+               "product_price": $(this).attr("product_price"),
+               "product_type": $(this).attr("product_type"),
+               "quantity": $("#prd_qnt_"+pdId).text(),
+            }
+
+            values.push(val)
+         })
+
+         var jsonText = JSON.stringify({"products":values});
+
+         $.ajax({
+            method: "POST",
+            url:"/order/set",
+            headers: {'X-CSRFToken': csrftoken},
+            data: {products:jsonText, orderNumber:orderNumber},
+            success: function (data){
+               console.log(data)
+
+               form = $('<form action="/order/confirmation" method="post" id="confirmOrder">'+
+                  '<input type="hidden" name="csrfmiddlewaretoken" value="'+csrftoken+'">'+
+                  '<input type="hidden" name="orderNumber" value="'+orderNumber+'" id="orderNumberCon">'+
+               '</form>')
+               $('body').append(form);
+               form.submit();
+
+            },
+         });
+      }
+   </script>
+
+{% endblock %}

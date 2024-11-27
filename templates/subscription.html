@@ -1,0 +1,223 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+<h1 class="display-4">Chose Your Preferred Subscription Plan</h1>
+<p class="lead"></p>
+</div>
+
+<style>
+    .card{
+        min-height: 410px;
+    }
+    .free-sub{
+        color: #ffc107 !important;
+    }
+    .free-sub:hover{
+        color: #000 !important;
+    }
+</style>
+
+<div class="container">
+<div class="card-deck mb-3 text-center">
+
+    <div class="card mb-4 box-shadow bg-dark">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Free</h4>
+        </div>
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+            <li>Swiss Holiday 2021 </li>
+            <li>loerm ipsum loerm ipsum</li>
+            <li>loerm ipsum loerm ipsum</li>
+            <li>loerm ipsum loerm ipsum</li>
+            </ul>
+            <a href="/profile" type="button" class="btn free-sub btn-lg btn-block btn-outline-warning">Subscribe Free</a>
+        </div>
+    </div>
+
+    <div class="card mb-4 box-shadow bg-dark">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Monthly</h4>
+        </div>
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title">$9.99 <small class="text-muted">/ mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+                <li>Swiss Holiday 2021 </li>
+                <li>loerm ipsum loerm ipsum</li>
+                <li>loerm ipsum loerm ipsum</li>
+                <li>loerm ipsum loerm ipsum</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-warning" id="show-payment-1">Get started</button>
+            <div id="paypal-button-container-1" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div class="card mb-4 box-shadow bg-dark">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Anual</h4>
+        </div>
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title">$111.99 <small class="text-muted">/ yr</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+                <li>Swiss Holiday 2021 </li>
+                <li>loerm ipsum loerm ipsum</li>
+                <li>loerm ipsum loerm ipsum</li>
+                <li>loerm ipsum loerm ipsum</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-warning" id="show-payment-2">Get started</button>
+            <div id="paypal-button-container-2" style="display: none;"></div>
+        </div>
+    </div>
+
+    <div class="card mb-4 box-shadow bg-dark">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Two Year</h4>
+        </div>
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title">$229.99 <small class="text-muted">/ 2 yr</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+                <li>Swiss Holiday 2021 </li>
+                <li>loerm ipsum loerm ipsum</li>
+                <li>loerm ipsum loerm ipsum</li>
+                <li>loerm ipsum loerm ipsum</li>
+            </ul>
+            <button type="button" class="btn btn-lg btn-block btn-outline-warning" id="show-payment-3">Get started</button>
+            <div id="paypal-button-container-3" style="display: none;"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Include the PayPal JavaScript SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=Aexys5OugIzjKt7o1Yhb66qjVHH__h9c1NB-mU15ErsB8y6bp7uTInF7NBDw3mTimRjjkVAUUaLEt5lc&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
+<script>
+    $("#show-payment-3").click(function(){
+        $(this).hide();
+        $("#paypal-button-container-3").show();
+
+        // $("#paypal-button-container-1").hide();
+        // $("#paypal-button-container-2").hide();
+    });
+
+    $("#show-payment-2").click(function(){
+        $(this).hide();
+        $("#paypal-button-container-2").show();
+
+        // $("#paypal-button-container-1").hide();
+        // $("#paypal-button-container-3").hide();
+    });
+
+    $("#show-payment-1").click(function(){
+        $(this).hide();
+        $("#paypal-button-container-1").show();
+
+        // $("#paypal-button-container-3").hide();
+        // $("#paypal-button-container-2").hide();
+    });
+    // Render the PayPal button into #paypal-button-container
+    paypal.Buttons({
+        
+        style: {
+            color:  'black',
+            shape:  'pill',
+            label:  'pay',
+            height: 40
+        },
+
+        createSubscription: function(data, actions) {
+            return actions.subscription.create({
+                /* Creates the subscription */
+                plan_id: 'P-05376821W95625223MFFONDI'
+            });
+        },
+
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            var form = $('<form action="thank-you" method="post">' +
+                '"{% csrf_token %}"' +
+            '<input type="text" name="subscriptionID" value="' + data.subscriptionID + '" />' +
+            '<input type="text" name="orderID" value="' + data.orderID + '" />' +
+            '<input type="text" name="membershipType" value="two-year" />' +
+            '</form>');
+            $('body').append(form);
+            form.submit();
+            console.log(data)
+        }
+
+
+    }).render('#paypal-button-container-3');
+
+
+    paypal.Buttons({
+
+        style: {
+            color:  'black',
+            shape:  'pill',
+            label:  'pay',
+            height: 40
+        },
+
+        createSubscription: function(data, actions) {
+            return actions.subscription.create({
+                /* Creates the subscription */
+                plan_id: 'P-4K360143XE979832AMFFOYQA'
+            });
+        },
+
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            var form = $('<form action="thank-you" method="post">' +
+                '"{% csrf_token %}"' +
+            '<input type="text" name="subscriptionID" value="' + data.subscriptionID + '" />' +
+            '<input type="text" name="orderID" value="' + data.orderID + '" />' +
+            '<input type="text" name="membershipType" value="anual" />' +
+            '</form>');
+            $('body').append(form);
+            form.submit();
+            console.log(data)
+        }
+
+
+    }).render('#paypal-button-container-2');
+
+
+
+    paypal.Buttons({
+
+    style: {
+        color:  'black',
+        shape:  'pill',
+        label:  'pay',
+        height: 40
+    },
+
+    createSubscription: function(data, actions) {
+        return actions.subscription.create({
+            /* Creates the subscription */
+            plan_id: 'P-0J5320433R0890912MFFOZVI'
+        });
+    },
+
+    // Finalize the transaction
+    onApprove: function(data, actions) {
+        var form = $('<form action="thank-you" method="post">' +
+                '"{% csrf_token %}"' +
+            '<input type="text" name="subscriptionID" value="' + data.subscriptionID + '" />' +
+            '<input type="text" name="orderID" value="' + data.orderID + '" />' +
+            '<input type="text" name="membershipType" value="monthly" />' +
+            '</form>');
+            $('body').append(form);
+            form.submit();
+        console.log(data)
+    }
+
+
+    }).render('#paypal-button-container-1');
+</script>
+
+{% endblock %}

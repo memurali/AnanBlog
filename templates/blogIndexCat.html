@@ -1,0 +1,37 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href='{% static "css/blog.css" %}'>
+
+<div class="page-title-wrap">
+    <h2 class="page-title">{{category.category_name}}</h2>
+</div><!-- .page-title-wrap -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="margin-bottom: 10px;">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{category.category_name}}</li>
+    </ol>
+</nav><!-- .breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="border-width: 0;">
+        <li class="nav-item active font-weight-bold">Sort By:</li>
+        <li class="nav-item ml-3" aria-current="page"><a href="#">Latest</a></li>
+        <li class="nav-item ml-3" aria-current="page"><a href="">Curated</a></li>
+        <li class="nav-item ml-3" aria-current="page"><a href="">Popular</a></li>
+
+        <li class="nav-item active ml-5 font-weight-bold">Show:</li>
+        <li class="nav-item ml-3" aria-current="page"><a href="#">All</a></li>
+        <li class="nav-item ml-3" aria-current="page"><a href="#">Onpoint</a></li>
+    </ol>
+</nav>
+
+{{content | safe}}
+
+<!-- <li class="page-item"><a class="page-link active" href="#">1</a></li>
+<li class="page-item"><a class="page-link" href="#">2</a></li>
+<li class="page-item"><a class="page-link" href="#">3</a></li>
+<li class="page-item"><a class="page-link" href="#">4</a></li>
+<li class="page-item"><span class="page-link text-light">....</span></li>
+<li class="page-item"><a class="page-link" href="#">12</a></li> -->
+
+{% endblock %}

@@ -1,0 +1,26 @@
+.blog-index-img{
+    width:100% !important;
+    height: 98% !important;
+}
+
+.page-link{
+    background-color: #000 !important;
+    margin-left: 2.5rem;
+    border: 0;
+    width: 45px;
+    height: 45px;
+    font-size: 30px;
+    padding: .4rem 1rem;
+}
+
+.pg-btn{
+    background-color: #1F2123 !important;
+    border-radius: 0.25rem !important;
+    padding: .35rem 1rem !important;
+}
+
+.page-item .active{
+    background-color: #1F2123 !important;
+    color: #ffc83a !important;
+    border-radius: 0.25rem !important;
+}

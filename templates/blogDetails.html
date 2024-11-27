@@ -1,0 +1,319 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+   p{
+      color: #fff !important;
+   }
+
+   p a{
+      font-weight: 600 !important;
+   }
+
+   .comment-img{
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+   }
+
+   .comment-red{
+      border-color: #fd0000;
+   }
+
+   .highlights ul{
+      list-style-image: url("https://res.cloudinary.com/hj7llsxyl/image/upload/v1634038650/Subtract_edwwdb.png");
+   }
+</style>
+
+{% csrf_token %}
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=290963312463531&autoLogAppEvents=1" nonce="x0rb4ymR"></script>
+
+<div class="container">
+    <div class="page-title-wrap">
+       <h2 class="page-title blog-dt-title">Article <span>Detail Page</span></h2>
+    </div><!-- .page-title-wrap -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Article Detail Page</li>
+      </ol>
+    </nav><!-- .breadcrumb -->
+    <div class="post">
+       <div class="post-featured-section">
+          <div class="post-featured-image">
+             <img class="img-fluid blog-dt-big-img" style="max-height: 460px;" src="{{ blogDt.image.url }}" alt="">
+          </div>
+          <div class="post-author-block">
+             <div class="author-block-header">
+                <h3>Author</h3>
+             </div>
+             <div class="author-block-body">
+                <div class="author-image">
+                   <a href="#"><img class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631781923/author-image_s9wmxv.jpg" alt=""></a>
+                </div>
+                <h5 class="author-name">by <a href="#">Evan Selinger</a></h5>
+                <div class="post-date">Apr 08, 2012</div>
+                <div class="btn-section">
+                   <button class="btn btn-theme btn-block">
+                       <a href="{% url 'download_blog_pdf' blogDt.id %}" style="color: inherit; text-decoration: none;">Download Full Report</a>
+                   </button>
+                </div>
+                <h4>Sign Up To Our Newsletter For Exclusive Research And Analysis</h4>
+                <form>
+                   <div class="form-group icon-email-field">
+                      <input type="email" class="form-control" placeholder="Enter Your Email">
+                      <button type="submit" class="btn">
+                         <i class="fas fa-arrow-right"></i>
+                      </button>
+                   </div>
+                </form>
+             </div><!-- .author-block-body -->
+          </div><!-- .post-author -->
+       </div><!-- .post-featured-section -->
+       <div class="row site-content">
+          <div class="col-lg-4 secondary widget-area">
+             <div class="widget widget-recent-post">
+                <h3 class="widget-title">TRENDING NOW</h3>
+                <ul>
+
+                  {% for ats in trending_articles %}
+                     <li>
+                        <div class="entry-meta">
+                           <div class="cat-links">
+                              <a href="/search?q={{ats.categories}}">{{ats.categories}}</a>
+                           </div>
+                        </div>
+                        <h3 class="entry-title"><a href="/articles/details/{{ats.title}}-{{ats.id}}">{{ats.title}}</a></h3>
+                     </li>
+                  {% endfor %}
+                   
+                </ul>
+             </div><!-- .widget -->
+             <div class="widget widget-link">
+                <h3 class="widget-title">ARTICLE STATS</h3>
+                <ul>
+                   <li><a href="#"># Ofimages</a></li>
+                   <li><a href="#"># References</a></li>
+                   <li><a href="#"># Words Displayed</a></li>
+                   <li><a href="#">Total Number Of Words</a></li>
+                   <li><a href="#"># Etc</a></li>
+                </ul>
+             </div><!-- widget -->
+             <div class="widget widget-link">
+                <h3 class="widget-title">KEYWORDS</h3>
+                <ul>
+                   {{keywords | safe}}
+                </ul>
+             </div><!-- widget -->
+
+             <div class="widget widget-link">
+               <h3 class="widget-title">SHARE</h3>
+
+               <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small">
+                  
+                  <a target="_blank" class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u={{site_url}}" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook"></i></a>
+
+                  <a target="_blank" class="twitter-share-button share-btn ml-3" href="https://twitter.com/intent/tweet?text={{site_url}}"><i class="fab fa-twitter"></i></a>
+
+                  <a target="_blank" class="twitter-share-button share-btn ml-3" href="https://www.linkedin.com/sharing/share-offsite/?url={{site_url}}"><i class="fab fa-linkedin-in"></i></a>
+
+               </div>
+
+             </div><!-- widget -->
+             
+          </div><!-- .secondary -->
+          <div class="col-lg-8 primary">
+             <h1 class="main-entry-title">{{blogDt.title}}</h1>
+
+             <div class="row">
+               <p class="lead drop-cap">{{blogDt.shortDescription}}</p>
+             </div>
+
+             {% if blogDt.highLights != "" %}
+             
+             <h3 class="section-title"><span>Highlights:</span></h3>
+             
+             <div class="highlights">
+               {{blogDt.highLights | safe}}
+             </div>
+
+             {% endif %}
+             <br>
+
+             
+             <div class="blog-content-container">{{blogDt.content | safe}}</div>
+
+
+          </div><!-- .primary -->
+       </div><!-- .site-content -->
+    </div><!-- .post -->
+ </div><!-- .container -->
+
+ <input type="hidden" id="loggedin" value="{{loggedin}}">
+
+
+ <div class="container">
+    <div class="row">
+       <div class="col-lg-8">
+          <div class="comment-block">
+             <div class="comment-wrap">
+               <div class="commenter-img">
+                   <img class="img-fluid comment-img" src="{{userImage}}" alt="">
+               </div>
+                <div class="comment-box comment-post-edit">
+                  <div class="form-group">
+                     <input type="hidden" id="blogId" value="{{blogDt.id}}">
+                     <input type="text" class="form-control comment" placeholder="Leave Your Comments">
+                     <button class="btn btn-warning mt-3 comment-btn">Comment</button>
+                     <span class="text-warning ml-3 cmnt-mssg"></span>
+                  </div>
+                   {% if loggedin != True %}
+                   <div class="comment-action">
+                      <a href="/login?next=/articles/details/{{blogDt.id}}" class="sign-in">Sign In</a>
+                   </div>
+                   {% endif %}
+                   <!-- <div class="social-links">
+                      <ul>
+                         <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                         <li><a href="#"><i class="fab fa-google"></i></a></li>
+                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                         <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                      </ul>
+                   </div> -->
+                </div><!-- .comment-box -->
+             </div><!-- .comment-wrap -->
+             <!-- <div class="comment-tabs">
+                <ul>
+                   <li><a href="#">Newest (2)</a></li>
+                   <li><a href="#">Oldest</a></li>
+                </ul>
+             </div> -->
+             <div class="comment-list">
+                {{blog_comments | safe}}
+             </div><!-- .comment-list -->
+             <!-- <div class="comment-action">
+                <a href="#" class="read-more">Read More Comments</a>
+             </div> -->
+          </div><!-- .comment-block -->
+       </div><!-- .col-lg-8 -->
+    </div><!-- .row -->
+ </div>
+</div>
+<button id="blick" style="display: none;">blick</button>
+<!-- .section-block -->
+<div class="section-block">
+ <div class="container">
+    <div class="membership-block">
+       <h2>You've Landed On Extra  Crunch Exclusive</h2>
+       <div class="row">
+          <div class="col-md-6 col-lg-4 membership-col">
+             <div class="membership-box">
+                <h3><span>Monthly</span><span>Membership</span><span class="surfix">Trial</span></h3>
+                <div class="membership-box-footer">
+                   <button class="btn btn-theme">$5/ First Month*</button>
+                   <h5>Then $15/ Month</h5>
+                </div>
+             </div><!-- .membership-box -->
+          </div><!-- .col-md-4 -->
+          <div class="col-md-6 col-lg-4 membership-col">
+             <div class="membership-box">
+                <h3><span>Annual</span><span>Membership</span><span class="surfix">Save $80</span></h3>
+                <div class="membership-box-footer">
+                   <button class="btn btn-theme">$99/ year*</button>
+                   <h5>Exclusive Community Perks</h5>
+                </div>
+             </div><!-- .membership-box -->
+          </div><!-- .col-md-4 -->
+          <div class="col-md-6 col-lg-4 membership-col">
+             <div class="membership-box">
+                <h3><span>2 Year</span><span>Membership</span><span class="surfix">Best Deal</span></h3>
+                <div class="membership-box-footer">
+                   <button class="btn btn-theme">$189/ 2 years*</button>
+                   <h5>Exclusive Community Perks</h5>
+                </div>
+             </div><!-- .membership-box -->
+          </div><!-- .col-md-4 -->
+       </div>
+    </div><!-- .membership-block -->
+    <div class="membership-benefits">
+       <h3>Membership Benefits</h3>
+       <ul>
+          <li><span class="icon-list"><i class="far fa-check-circle"></i></span>Curated Datasets.</li>
+          <li><span class="icon-list"><i class="far fa-check-circle"></i></span>Data-driven Economic and Political Intelligence.</li>
+          <li><span class="icon-list"><i class="far fa-check-circle"></i></span>Exclusive Insights (breaking news, Exposés and Investigative Research).</li>
+          <li><span class="icon-list"><i class="far fa-check-circle"></i></span>Full access to real-time Economic and Political Intelligence.</li>
+          <li><span class="icon-list"><i class="far fa-check-circle"></i></span>Curated dossiers.</li>
+          <li><span class="icon-list"><i class="far fa-check-circle"></i></span>Bespoke reports.</li>
+       </ul>
+       <a href="/privacy-policy" class="btn-link">Additional Terms and Conditions Apply</a>
+    </div><!-- .membership-benifits -->
+ </div>
+</div>
+<!-- .section-block -->
+<div class="section-block">
+ <div class="container">
+    <div class="receommeded-block">
+       <h2 class="section-title"><span>Recommended Articles in this Category</span></h2>
+       <div class="row">
+
+         {{ similar_blogs | safe }}
+
+       </div>
+    </div><!-- .recommended-block -->
+ </div>
+
+ <script src="{% static 'js/blog.js' %}"></script>
+
+ <script>
+
+   $.ajax({
+      method: "POST",
+      url: "/get-constance",
+      headers: {'X-CSRFToken': csrftkn},
+      mode: 'same-origin',
+      data: {chkWaterMark:""},
+      success: function (data){
+            if (data == 'True'){
+
+               $('img').map(function(){
+                  note = $(this).attr("note")
+
+                  if(note == "nowt"){
+                     //pass
+                  }else{
+
+                     $(this).watermark({
+                        path: 'https://res.cloudinary.com/hj7llsxyl/image/upload/c_scale,w_50/v1633777404/anan-logo_nhuutx.png',
+                        gravity: 'ne',
+                        opacity: 0.7,
+                        margin: 10,
+                        outputWidth: 'auto',
+                        outputHeight: 'auto',
+                        fullOverlay: !1,
+                     });
+
+                     // anan-logo_nhuutx.png
+                     // favicon_qgwuvj.png
+                  }
+               }).get();
+
+               $(".blog-dt-big-img").watermark({
+                        path: 'https://res.cloudinary.com/hj7llsxyl/image/upload/c_scale,w_50/v1633777404/anan-logo_nhuutx.png',
+                        gravity: 'ne',
+                        opacity: 0.7,
+                        margin: 20,
+                        outputWidth: 'auto',
+                        outputHeight: 'auto',
+                        fullOverlay: !1,
+                  });
+
+            }
+      }
+   });
+
+ </script>
+
+{% endblock %}

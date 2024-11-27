@@ -1,0 +1,55 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+   p{
+      color: #fff !important;
+   }
+
+   p a{
+      font-weight: 600 !important;
+   }
+
+   .comment-img{
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+   }
+
+   .comment-red{
+      border-color: #fd0000;
+   }
+</style>
+
+{% csrf_token %}
+
+<div class="container">
+    <div class="page-title-wrap">
+       <h2 class="page-title">About</h2>
+    </div><!-- .page-title-wrap -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="home">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">About</li>
+      </ol>
+    </nav><!-- .breadcrumb -->
+    <div class="about-container">
+        <p>AnangTawiah.com, LLC is a New York Based strategic Research and Risk Advisory practice that helps clients craft
+            risk management strategies that yield resilience and drive growth.</p>
+
+        <p>Our ever-changing world creates risk and uncertainty, but it also offers opportunity.
+            We work collaboratively with clients to help them mitigate risks in order to maximize
+            emergent opportunities while growing sustainably.</p>
+
+
+        <p>Gather Data.</p>
+        <p>Analyze the Data.</p>
+        <p>Provide Unparalleled Data-Driven Insights and Guidance.</p>
+    </div>
+
+ </div><!-- .container -->
+
+ <input type="hidden" id="loggedin" value="{{loggedin}}">
+
+{% endblock %}

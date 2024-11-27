@@ -1,0 +1,121 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+    background-color: #000000;
+    color: #fff;
+}
+
+p{
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+a{
+    color:#fff !important;
+}
+
+a:hover{
+    color: #ffc83a !important;
+    border: none;
+  }
+
+.container{
+    max-width: 1300px;
+    margin-bottom: 2rem;
+}
+
+.col-md-11 {
+    -ms-flex: 0 0 99.666667% !important;
+    flex: 0 0 99.666667% !important;
+    max-width: 100% !important;
+    margin-left: 0px !important;
+    padding-right: 0;
+}
+
+.col-md-3 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 33%;
+    max-width: 32.5%;
+}
+
+.mt-10{
+    margin-top: 160px !important;
+}
+
+.page-titles{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.page-divider{
+    color: #fff;
+    width: 100%;
+    float: center;
+    border: 1px solid;
+}
+
+.page-col-titles{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.nav-link{
+    color: #fff;
+    padding: .2rem 0;
+}
+
+.nav-link:hover{
+    color: #ffc83a !important;
+}
+
+.col-no-pad{
+    padding: 0 !important;
+}
+
+.ap-border{
+    width: 120px;
+    border-bottom: solid #FE8900;
+    border-width: 8px;
+    margin-top: 25px;
+}
+
+.anan-nav-collapse{
+    width: 100%;
+    min-height: 100vh;
+    background-color: #ffc83a;
+    border: 1px solid black;
+    margin-top: -195px;
+    margin-bottom: 55px;
+    position: absolute;
+}
+
+.menu-item-link:hover{
+    color: #000 !important;
+}
+
+.menu-social-icon{
+    font-size: 25px;
+}
+
+.menu-social-icon:hover{
+    color: #000 !important;
+}
+
+ul li{
+    color: #fff;
+}
+
+.blog-content-container * {
+    all: revert;
+    /* Add your desired styles below */
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    background-color: inherit !important;
+    /* Add more properties as needed */
+}
+
+.about-container > p {
+    font-size: 14px;
+}

@@ -1,0 +1,142 @@
+<!-- .section-block -->
+   <div class="section-block" id="contact">
+      <div class="container">
+         <div class="form-block inquiry-form-block">
+            <div class="row">
+               <div class="col-lg-6">
+                  <h2>How Can We Help?</h2>
+                  <h5>Please select a topic below related to your inquiry. if you don't find what you need, fill what you need, fill out contact form.</h5>
+                  <div class="subscribe-accordion accordion" id="accordionExample">
+                     <div class="card">
+                        <div class="card-header" id="headingOne">
+                           <h3>Subscribe for exclusive content</h3>
+                           <p>discover the many ways in which our customers use sleeknote.</p>
+                           <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                              <i class="fas fa-chevron-right"></i>
+                           </button>
+                        </div>
+                        <!-- .card-header -->
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                           <div class="card-body">
+                              <p>Become a Goldstreet Consulting member<br> Goldstreet members get full access to every article published on Goldstreet, including our full archive. You'll also get free access to Goldstreet Monthly events, each event's live video stream and our full video archive.</p>
+                              <p>To activate your membership immediately, enter your payment details and subscription preferences below.</p>
+                           </div>
+                        </div>
+                        <!-- .collapse -->
+                     </div>
+                     <!-- .subscribe-accordion -->
+                  </div>
+                  <div class="contact-info-box">
+                        <h3>Contact Information</h3>
+                        <ul class="contact-info">
+                           <li>
+                              <span class="icon icon-location">
+                                 <i class="fas fa-map-marker-alt"></i>
+                              </span>
+                              <span class="info-label">Anang Tawiah <br/> 14 Wall Street Manhattan <br/> 20th floor <br/> New York, NY 10005</span>
+                           </li>
+                           <li>
+                              <span class="icon icon-phone">
+                                 <i class="fas fa-phone-alt"></i>
+                              </span>
+                              <span class="info-label">+1 (551) 800-2125</span>
+                           </li>
+                           <li>
+                              <span class="icon icon-mail">
+                                 <i class="fas fa-envelope"></i>
+                              </span>
+                              <span class="info-label">info@anangtawiah.com</span>
+                           </li>
+                        </ul>
+                        <!-- .contact-info -->
+                     </div>
+                     <!-- .contact-info-box -->
+               </div>
+               <!-- .col-md-6 -->
+               <div class="col-lg-6">
+                  <div class="form-box">
+                     <form action="/set-contact" id="contactForm" enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
+                        <div class="form-row">
+                           <div class="form-group col-md-6">
+                              <label>First Name *</label>
+                              <input type="text" required name="first_name" class="form-control">
+                           </div>
+                           <div class="form-group col-md-6">
+                              <label>Last Name *</label>
+                              <input type="text" required name="last_name" class="form-control">
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label>Email *</label>
+                           <input type="email" required name="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                           <label>Phone *</label>
+                           <input type="tel" required name="phone" class="form-control">
+                        </div>
+                        <div class="form-group">
+                           <label>Reason for your solicitation</label>
+                           <select class="form-control bg-dark" required name="consulation">
+                              <option value="Consulting Services Inquiry">General inquiry</option>
+                              <option value="Consulting Services Inquiry">Content licensing</option>
+                              <option value="Consulting Services Inquiry">Booking</option>
+                              <option value="Consulting Services Inquiry">Other</option>
+                           </select>
+                        </div>
+                        <div class="form-group">
+                           <label>Company Name</label>
+                           <input type="text" name="company_name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                           <label>Message</label>
+                           <input type="text" required name="message" class="form-control">
+                        </div>
+                        <div class="form-group">
+                           <label>Additional Details</label>
+                           <textarea class="form-control" name="additional_details" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                           <label>How Did You Find Us?</label>
+                           <input type="text" required name="source" class="form-control">
+                        </div>
+                        <div class="form-group">
+                           <label>Drop In any Relevant File Here</label>
+                           <input type="file" name="rev_file" class="form-control-file">
+                        </div>
+                        <div class="radio-checkbox terms-btn" data-toggle="buttons">
+                           <label class="btn">
+                              <input type="checkbox" name="terms_agree" required > <a href="/terms-of-use"> Terms and Conditions </a>
+                           </label>
+                        </div>
+
+                        <div class="g-recaptcha" data-sitekey="6Lc-GbYcAAAAAAk6YcBg4UX1DPBaibtXuHxhrbPM"></div>
+                        <span id="captchaDiv" class="text-danger"></span>
+
+                        <button type="submit" class="btn mt-3 btn-theme btn-block">Send Message</button>
+                     </form>
+                  </div>
+                  <!-- .form-box -->
+               </div>
+               <!-- .col-md-6 -->
+            </div>
+         </div>
+         <!-- .form-block -->
+      </div>
+   </div>
+   <!-- .section-block -->
+
+   <script>
+      $("#contactForm").submit(function(e){
+
+         if (grecaptcha.getResponse() == ""){
+            $("#captchaDiv").html('Invalid Captcha');
+         }else{
+            $("#captchaDiv").html('');
+
+            $("#contactForm").submit();
+         }
+
+         return false;
+      })
+   </script>

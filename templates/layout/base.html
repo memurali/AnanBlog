@@ -1,0 +1,563 @@
+{% load static %}
+{% load analytical %}
+{% load google_analytics_gtag %}
+{% load yandex_metrica %}
+<!doctype html>
+<html lang="en">
+  <head>
+   
+   {% analytical_head_top %}
+   {% google_analytics_gtag %}
+     
+   {% if page_title %}
+      <title>{{page_title}}</title>
+     {% else %}
+      <title>Anang Tawiah | Risk, Strategy and Advisory</title>
+     {% endif %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Anang Tawiah is an Economics and Geopolitical thought leader with extensive knowledge and experience working with governments and Multinationals globally.">
+    <meta name="keywords" content="Risk, Strategy, Advisory, Market Research">
+    <!-- <meta name="viewport" content="width=1024"> -->
+    <link rel="icon" href="{% static 'images/icon/favicon.png' %}" sizes="16x16" type="image/png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css">
+
+    <link rel="stylesheet" href='{% static "css/navbar.css" %}'>
+    <style>
+      .navbar-brand {
+            background-image: url("{% static 'images/anan-logo.png' %}") !important;
+            width: 233px;
+            height: 180px;
+      }
+      .anan-nav-icon {
+            background-image: url("{% static 'images/icon/toggle.svg' %}") !important;
+            width: 18px;
+            height: 16px;
+      }
+    </style>
+    <link rel="stylesheet" href='{% static "css/nishan.css" %}'>
+    <link rel="stylesheet" href='{% static "css/style.css" %}'>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/mobile-responsive.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://brianium.github.io/watermarkjs/scripts/polyfill.js"></script>
+    <script src="https://brianium.github.io/watermarkjs/scripts/watermark.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
+    <script src="{% static 'js/jquery.watermark.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/searchBar.js' %}"></script>
+    
+    {% analytical_head_bottom %}
+  
+    {% yandex_metrica %}
+   </head>
+  <body>
+
+   {% analytical_body_top %}
+    
+    <div class="container">
+
+        <header>
+            <nav class="navbar navbar-dark bg-dark-black col">
+
+                <button class="navbar-toggler navbar-toggle float-left" >
+                    <span class="navbar-toggler-icon anan-nav-icon"></span>
+                </button>
+
+                <div class="navbar-main">
+                  <div class="navbar-inner">
+                     <div class="row">
+                        <div class="col-lg-6 navbar-left">
+                           <a href="#" class="navbar-toggle"><i class="fas fa-times"></i></a>
+                           <div class="search-block">
+                              <form method="get" action="/search" class="search-form">
+                                 <div class="form-group">
+                                    <label class="sr-only">Search</label>
+                                    <div class="field-wrap">
+                                       <input type="text" name="q" class="form-control" placeholder="Search...">
+                                       <button class="btn search-icon"><i class="fas fa-search"></i></button>
+                                    </div>
+                                 </div>
+                              </form>
+                           </div>
+                           <div class="main-navigation">
+                              <ul class="navbar-nav">
+
+                                 {% for category in categories %}
+                                    <li class="menu-item"><a class="menu-item-link" href="/articles/{{category.category_slug}}">{{category.category_name}}</a></li>
+                                 {% endfor %}
+
+                              </ul>
+                           </div><!-- .main-navigation -->
+                           <div class="secondary-navbar">
+                              <div class="row align-items-center">
+                                 <div class="col-md-5 s-navbar-left">
+                                    <ul class="navbar-menu-2">
+                                       <li class="menu-item"><a class="menu-item-link"  href="/home">Home</a></li>
+                                       <li class="menu-item"><a class="menu-item-link" href="/about">About</a></li>
+                                       <li class="menu-item"><a class="menu-item-link" href="#">Services</a></li>
+                                       <li class="menu-item"><a class="menu-item-link" href="/presentation">Presentation</a></li>
+                                       <li class="menu-item"><a class="menu-item-link" href="/articles">Blog</a></li>
+                                       <li class="menu-item"><a class="menu-item-link" href="/all-publications">Publications</a></li>
+                                       <li class="menu-item"><a class="menu-item-link" href="/contact">Contact</a></li>
+                                    </ul>
+                                 </div><!-- .s-navbar-left-->
+                                 <div class="col-md-7 s-navbar-right">
+                                    <h5>Sign Up For Daily Emails To Get The Latest Goldstreet Consulting News.</h5>
+                                    <form>
+                                       <div class="form-group icon-email-field">
+                                          <input type="email" class="form-control" placeholder="Enter Your Email">
+                                          <button type="submit" class="btn">
+                                             <i class="fas fa-arrow-right"></i>
+                                          </button>
+                                       </div>
+                                    </form>
+                                 </div><!-- .s-navbar-right-->
+                              </div>
+                           </div><!-- .secondary-navbar -->
+                           <div class="secondary-navbar logout">
+                              <ul class="navbar-menu-2">
+                                 {% if loggedin %}
+                                 <li class="menu-item"><a class="menu-item-link" href="/profile">Account</a></li>
+                                 <li class="menu-item"><a class="menu-item-link" href="/logout">Logout</a></li>
+                                 {% else %}
+                                 <li class="menu-item"><a class="menu-item-link" href="/login">Login</a></li>
+                                 {% endif %}
+                              </ul>
+                           </div><!-- .secondary-navbar -->
+                           <div class="row navbar-foot">
+                              <div class="col-md-7 navbar-foot-info">
+                                 <h4>GoldStreet <span>Consulting</span></h4>
+                                 <p style="color: #000;">Digital Excellence. Delivered.</p>
+                              </div><!-- .col-md-7 -->
+                              <div class="col-md-5 navbar-foot-social">
+                                 <div class="social-links">
+                                    <ul>
+                                       <li><a class="menu-social-icon" href="https://www.facebook.com/AnangTawiah"><i class="fab fa-facebook"></i></a></li>
+                                       <li><a class="menu-social-icon" href="#"><i class="fab fa-google"></i></a></li>
+                                       <li><a class="menu-social-icon" href="https://twitter.com/AnangTawiah"><i class="fab fa-twitter"></i></a></li>
+                                       <li><a class="menu-social-icon" href="https://www.linkedin.com/anangtawiah"><i class="fab fa-linkedin-in"></i></a></li>
+                                    </ul>
+                                 </div>
+                              </div><!-- .col-md-5 -->
+                           </div><!-- .row -->
+                        </div><!-- .navbar-left -->
+                        <div class="col-lg-6 navbar-right">
+                           {{ menuContent | safe }}
+                        </div>
+                        <!-- .navbar-right -->
+                     </div><!-- .row -->
+                  </div><!-- .navbar-inner -->
+               </div><!-- .navbar-main -->
+
+                <a class="navbar-brand" href="/home"></a>
+
+                <div class="col icon-div">
+                  <nav class="navbar navbar-expand rounded nav-right-social" style="margin-top: 20px;">
+                    <ul class="navbar-nav ml-auto" style="display: flex; justify-content: flex-end;">
+                      <li class="nav-item nav-item-nrs">
+                        <a href="/cart" target="_blank" class="social-icon">
+                          <i class="fas fa-shopping-cart"></i>
+                        </a>
+                      </li>
+                      <li class="nav-item nav-item-nrs ml-3">
+                        <a href="/search" target="_blank" class="social-icon">
+                          <i class="fas fa-search"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                  <br>
+                  <nav class="navbar navbar-expand rounded nav-right-social" style="margin-top: 20px;">
+                    <ul class="navbar-nav ml-auto" style="display: flex; justify-content: flex-end;">
+                      <li class="nav-item nav-item-nrs">
+                        <a href="https://www.facebook.com/AnangTawiah" target="_blank" class="social-icon">
+                          <i class="fab fa-facebook-f"></i>
+                        </a>
+                      </li>
+                      <li class="nav-item nav-item-nrs ml-3">
+                        <a href="https://twitter.com/AnangTawiah" target="_blank" class="social-icon">
+                          <img src="{% static 'images/icon/twitter.svg' %}" alt="">
+                        </a>
+                      </li>
+                      <li class="nav-item nav-item-nrs ml-3">
+                        <a href="https://www.linkedin.com/anangtawiah" target="_blank" class="social-icon">
+                          <i class="fab fa-linkedin-in"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+                
+                <div class="underline-div">
+                   <hr class="nav-underline">
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-sec pl-5 pr-5">
+            {% csrf_token %}
+
+            <script>
+               const csrftkn = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            </script>
+
+            {% block content %}
+            {% endblock %}
+        </main>
+
+    </div>
+    
+    <div class="section-block">
+      <div class="container">
+         <h2 class="section-title"><span>MOST POPULAR</span></h2>
+         <ul class="swiss-holiday-statics">
+            <li class="swiss-data-1">
+               <h4>
+                  <a href="" style="color: #000 !important;">Swiss Holiday 2021 - Virtual Edition</a>
+               </h4>
+               <span class="swiss-tag">150</span>
+            </li>
+            <li class="swiss-data-2">
+               <h4><a href="" style="color: #000 !important;">Swiss Holiday 2021 - Virtual Edition</a></h4>
+               <span class="swiss-tag">150</span>
+            </li>
+            <li class="swiss-data-3">
+               <h4><a href="" style="color: #000 !important;">Swiss Holiday 2021 - Virtual Edition</a></h4>
+               <span class="swiss-tag">150</span>
+            </li>
+            <li class="swiss-data-4">
+               <h4><a href="" style="color: #000 !important;">Swiss Holiday 2021 - Virtual Edition</a></h4>
+               <span class="swiss-tag">150</span>
+            </li>
+            <li class="swiss-data-5">
+               <h4><a href="" style="color: #000 !important;">Swiss Holiday 2021 - Virtual Edition</a></h4>
+               <span class="swiss-tag">150</span>
+            </li>
+            <li class="swiss-data-6">
+               <h4><a href="" style="color: #000 !important;">Swiss Holiday 2021 - Virtual Edition</a></h4>
+               <span class="swiss-tag">150</span>
+            </li>
+            <li class="swiss-data-7">
+               <h4><a href="" style="color: #000 !important;">Swiss Holiday 2021 - Virtual Edition</a></h4>
+               <span class="swiss-tag">150</span>
+            </li>
+         </ul>
+         <!-- .swiss-holiday-statics -->
+      </div>
+   </div>
+
+   {% block contact_form %}
+       {% include 'contact_form.html' %}
+   {% endblock %}
+
+   <footer class="site-footer">
+      <div class="widget-area">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-6 col-lg-3">
+                  <div class="widget widget-navigation">
+                     <h3>Anang <span>Tawiah's</span><span class="theme-color">Notes.</span></h3>
+                     <ul>
+                        <li><a href="#">Data</a></li>
+                        <li><a href="#">Digital</a></li>
+                        <li><a href="#">Analytics</a></li>
+                        <li><a href="#">Research</a></li>
+                        <li><a href="#">Management</a></li>
+                     </ul>
+                  </div>
+                  <!-- .widget-navigation -->
+               </div>
+               <!-- col-md-3 -->
+               <div class="col-md-6 col-lg-3">
+                  <div class="widget widget-about">
+                     <h3 class="widget-title">About</h3>
+                     <p>AnangTawiah.com, LLC is a New York Based strategic Research and Risk Advisory practice that
+                         helps clients craft risk management strategies that yield resilience and drive growth.</p>
+                     <p>Our ever-changing world creates risk and uncertainty, but it also offers opportunity.
+                         We work collaboratively with clients to help them mitigate risks in order to maximize
+                         emergent opportunities while growing sustainably.</p>
+                     <h4>Sign Up For Daily Emails To Get The Latest Goldstreet Consulting News</h4>
+                     <form>
+                        <div class="form-group icon-email-field">
+                           <input type="email" class="form-control" placeholder="Enter Your Email">
+                           <button type="submit" class="btn">
+                              <i class="fas fa-arrow-right"></i>
+                           </button>
+                        </div>
+                     </form>
+                  </div>
+                  <div class="widget">
+                     <h3 class="widget-title">Site Map</h3>
+                  </div>
+               </div>
+               <!-- col-md-3 -->
+               <div class="col-md-6 col-lg-3">
+                  <div class="widget widget-progress">
+                     <h3 class="widget-title">Categories</h3>
+                     <ul id="footer_category">
+                        
+                     </ul>
+                  </div>
+               </div>
+               <!-- col-md-3 -->
+               <div class="col-md-6 col-lg-3">
+                  <div class="widget widget-progress">
+                     <h3 class="widget-title">Keywords</h3>
+                     <ul id="footer_keyword">
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Case Studies</h4>
+                              <span class="progress-percent">365%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 36%" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Perspactive</h4>
+                              <span class="progress-percent">75%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Who We Are</h4>
+                              <span class="progress-percent">65%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Case Studies</h4>
+                              <span class="progress-percent">85%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Case Studies</h4>
+                              <span class="progress-percent">75%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Case Studies</h4>
+                              <span class="progress-percent">85%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Case Studies</h4>
+                              <span class="progress-percent">45%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Case Studies</h4>
+                              <span class="progress-percent">95%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                        <li>
+                           <div class="progress-label-bar">
+                              <h4 class="progress-label">Case Studies</h4>
+                              <span class="progress-percent">75%</span>
+                           </div>
+                           <div class="progress">
+                              <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                           </div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+               <!-- col-md-3 -->
+            </div>
+            <!-- .row -->
+         </div>
+      </div>
+      <!-- .widget-area -->
+      <div class="footer-info">
+         <div class="container">
+            <div class="site-info-bar" style="display: block;">
+
+               <div class="row justify-content-center">
+                  <div class="col">
+                     <div class="social-links">
+                        <ul style="margin-left: 45%;">
+                           <li><a href="https://www.facebook.com/AnangTawiah" target="blank"><i class="fab fa-facebook"></i></a></li>
+                           <li><a href="#" target="blank"><i class="fab fa-google"></i></a></li>
+                           <li><a href="https://twitter.com/AnangTawiah" target="blank"><i class="fab fa-twitter"></i></a></li>
+                           <li><a href="https://www.linkedin.com/anangtawiah" target="blank"><i class="fab fa-linkedin-in"></i></a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="col">
+                     <div class="site-info-copyright">
+                        <p id="year" style="font-size: 14px; text-align:center;"></p>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
+
+      <script>
+
+         var currentYear = new Date().getFullYear();
+         document.getElementById("year").innerHTML = '© Anang Tawiah, '+currentYear+' :  Unless otherwise stated, I am the creator of all content on this website (including but not limited to text, photos, videos, and artwork).  No part of the materials available through this website (AnangTawiah.com), shall be copied, photocopied, reproduced, translated, or reduced to any electronic medium or machine-readable form, in whole or in part, without the prior written consent of Anang Tawiah. Any other reproduction in any form without the permission of Anang Tawiah is prohibited. All materials contained on this site are protected by the United States copyright law and may not be reproduced, distributed, transmitted, displayed, published, or broadcast without the prior written permission of Anang Tawiah. You can reach me via the contact form if you wish to seek permission to use the content.  Cite posts as:  TAWIAH, ANANG, (date), “Post Title”, AnangTawiah.com.”' ;
+
+
+         $.ajax({
+            method: "get",
+            url: "/get-category",
+            data: {GG:""},
+            success: function (data){
+               $("#footer_category").html(data);
+            }
+         })
+
+
+
+         $.ajax({
+            method: "get",
+            url: "/get-most-popular",
+            dataType: 'json',
+            data: {GG:""},
+            success: function (data){
+               // console.log(data[0])
+               $(".swiss-data-1 h4 a").text(data[0]['title'])
+               $(".swiss-data-1 h4 a").attr("href", "/articles/details/"+data[0]['title']+'-'+data[0]['id'])
+               $(".swiss-data-1 span").text(data[0]['count'])
+
+               $(".swiss-data-2 h4 a").text(data[1]['title'])
+               $(".swiss-data-2 h4 a").attr("href", "/articles/details/"+data[1]['title']+'-'+data[1]['id'])
+               $(".swiss-data-2 span").text(data[1]['count'])
+
+               $(".swiss-data-3 h4 a").text(data[2]['title'])
+               $(".swiss-data-3 h4 a").attr("href", "/articles/details/"+data[2]['title']+'-'+data[2]['id'])
+               $(".swiss-data-3 span").text(data[2]['count'])
+
+               $(".swiss-data-4 h4 a").text(data[3]['title'])
+               $(".swiss-data-4 h4 a").attr("href", "/articles/details/"+data[3]['title']+'-'+data[3]['id'])
+               $(".swiss-data-4 span").text(data[3]['count'])
+
+               $(".swiss-data-5 h4 a").text(data[4]['title'])
+               $(".swiss-data-5 h4 a").attr("href", "/articles/details/"+data[4]['title']+'-'+data[4]['id'])
+               $(".swiss-data-5 span").text(data[4]['count'])
+
+               $(".swiss-data-6 h4 a").text(data[5]['title'])
+               $(".swiss-data-6 h4 a").attr("href", "/articles/details/"+data[5]['title']+'-'+data[5]['id'])
+               $(".swiss-data-6 span").text(data[5]['count'])
+
+               $(".swiss-data-7 h4 a").text(data[6]['title'])
+               $(".swiss-data-7 h4 a").attr("href", "/articles/details/"+data[6]['title']+'-'+data[6]['id'])
+               $(".swiss-data-7 span").text(data[6]['count'])
+               // console.log(data[6]['count'])
+            }
+         })
+
+         $.ajax({
+            method: "get",
+            url: "/get-keywords",
+            data: {GG:""},
+            success: function (data){
+               console.log(data)
+               $("#footer_keyword").html(data);
+            }
+         })
+
+
+         $.ajax({
+            method: "POST",
+            url: "/get-constance",
+            headers: {'X-CSRFToken': csrftkn},
+            mode: 'same-origin',
+            data: {chkWaterMark:""},
+            success: function (data){
+                if (data == 'True'){
+                  
+                  $('img').map(function(){
+                        note = $(this).attr("note")
+
+                        if(note == "nowt"){
+                           //pass
+                        }else if(note == "blog_image"){
+
+                           $(this).watermark({
+                              path: 'https://res.cloudinary.com/hj7llsxyl/image/upload/c_scale,w_50/v1633777404/anan-logo_nhuutx.png',
+                              gravity: 'ne',
+                              opacity: 0.7,
+                              margin: 10,
+                              outputWidth: 'auto',
+                              outputHeight: 'auto',
+                              fullOverlay: !1,
+                           });
+
+                           // anan-logo_nhuutx.png
+                           // favicon_qgwuvj.png
+                        }
+                  }).get();
+
+                }
+            }
+        });
+      </script>
+      
+   </footer>
+
+   {% analytical_body_bottom %}
+
+   <!-- Default Statcounter code for Anan Blog http://anangtawiah.com/ -->
+   <script type="text/javascript">
+      var sc_project=12668915; 
+      var sc_invisible=1; 
+      var sc_security="78ccdefb"; 
+   </script>
+   <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+   <noscript><div class="statcounter"><a title="Web Analytics
+   Made Easy - Statcounter" href="https://statcounter.com/"
+   target="_blank"><img class="statcounter"
+   src="https://c.statcounter.com/12668915/0/78ccdefb/1/"
+   alt="Web Analytics Made Easy - Statcounter"
+   referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+   <!-- End of Statcounter Code -->
+
+  </body>
+</html>

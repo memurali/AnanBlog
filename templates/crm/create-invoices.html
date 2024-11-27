@@ -1,0 +1,897 @@
+{% extends "layout/crm-base.html" %}
+
+{% block content %}
+
+<style>
+    
+    
+    .bg-midnight{
+        background-color: #202940 !important;
+        border-color: #060d20 !important;
+    }
+
+    .inv-sel{
+        border: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .modal-header{
+        border-bottom: none;
+    }
+
+    .modal-footer{
+        border-top: none;
+    }
+
+    .dropdown-toggle:focus {
+        color: #9c27b0 !important;
+    }
+
+    select option{
+        background-color: #202940 !important;
+    }
+
+    @media (min-width: 576px){
+        .modal-dialog {
+            max-width: 750px;
+        }
+    }
+
+</style>
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="javascript:void(0)">Invoices</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                  <i class="material-icons">notifications</i>
+                  <p class="d-lg-none d-md-block">
+                    Notifications
+                  </p>
+                </a>
+              </li>
+              <!-- your navbar here -->
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          
+          <!-- Contacts -->
+          <div class="row">
+            <div class="col">
+              <div class="card">
+
+                <div class="card-header card-header-warning">
+                  <h4 class="card-title "><a href="/contacts">Create Invoices</a></h4>
+                  <p class="card-category"></p>
+                </div>
+
+                <div class="card-body">
+                  <div class="table-responsive">
+                    
+
+                        <form action="" id="create_invoice">
+
+                            <h3>Invoice Info</h3>
+
+                            <div class="form-group mt-5">
+                                <label for="">Invoice Number <span class="text-danger">*</span></label>
+                                <input type="text" name="invoice_number" required class="form-control col-6">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="">Order Number</label>
+                                <input type="text" name="order_number" class="form-control col-6">
+                            </div>                            
+
+                            <div class="form-group mt-3">
+                                <label for="">Invoice Sender <span class="text-danger">*</span></label>
+                                <input type="hidden" name="invoice_sender" required value="">
+
+                                <div class="dropdown">
+                                    <a class="bg-midnight inv-sel dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Select Sender
+                                    </a>
+                                    <div class="dropdown-menu bg-midnight">
+                                        {% for sin in senderInfo %}
+                                            <a class="dropdown-item sender_info">{{sin.sender_name}}</a>
+                                        {% endfor %}
+                                      
+                                      <a class="dropdown-item" data-toggle="modal" data-target="#createInvSenderModal">Create New <i class="material-icons">add</i></a>
+                                    </div>
+                                </div>
+                                <span class="text-danger sender_err"></span>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="">Due Date <span class="text-danger">*</span></label>
+                                <input type="date" required name="due_date" required class="form-control col-6">
+                            </div>                                                       
+
+                            <div class="form-group mt-3">
+                                <label for="">Bill To <span class="text-danger">*</span></label>
+                                <input type="hidden" name="invoice_receipt" required value="">
+
+                                <div class="dropdown">
+                                    <a class="bg-midnight inv-rep dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Select Receipt
+                                    </a>
+                                    <div class="dropdown-menu bg-midnight">
+                                        {% for rep in receiptInfo %}
+                                            <a class="dropdown-item receipt_info">{{rep.receipt_name}}</a>
+                                        {% endfor %}
+                                      
+                                      <a class="dropdown-item" data-toggle="modal" data-target="#createInvReceiptModal">Create New <i class="material-icons">add</i></a>
+                                    </div>
+                                </div>
+                                <span class="text-danger receipt_err"></span>
+                            </div>
+
+
+                            <div class="form-group mt-3">
+                                <h3>Item Description</h3>
+                                <table class="table table-borderless" id="dynamic-field">
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Qty</th>
+                                        <th>Unit Price</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </tr>
+
+                                    <tr id="row1s">
+
+                                        <td>
+                                            <input class="form-control" required placeholder="item name" name="item_name[]" type="text" value="" />
+                                        </td>
+                                        <td>
+                                            <input class="form-control" required placeholder="qty" name="qty[]" type="number" id="qt_1" onchange="sumItems(1)" value="" />
+                                        </td>
+                                        <td>
+                                            <input class="form-control" required placeholder="unit price" name="unit_price[]" id="uni_1" onchange="sumItems(1)" type="number" value="" />
+                                        </td>
+                                        <td>
+                                            <input class="form-control bg-midnight" placeholder="amount" readonly name="amount[]" id="am_1" type="text" value="" />
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success btn-add" type="button"><span> <i class="material-icons">add</i> </span></button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="form-group mt-3">
+
+                                <label for="">Discounts in %</label>
+                                <input type="number" class="form-control col-6" name="discount" id="discount">
+
+                            </div>
+
+                            <div class="form-group mt-3">
+
+                                <label for="">Taxes in %</label>
+                                <input type="number" class="form-control col-6" name="taxes" id="taxes">
+
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="">Send to Receipt</label>
+                                <input type="checkbox" name="send_to_receipt" class="bg-midnight checkbox">
+                            </div>
+
+                            <div class="cssload-loader-walk save_activity_animation">
+                                <div></div><div></div><div></div><div></div><div></div>
+                                <p class="mt-3 text-info text-center">Creating</p>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Create Invoice
+                                </button>
+                            </div>
+
+                        </form>
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        <!-- sender Modal -->
+        <div class="modal fade" id="createInvSenderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-midnight">
+                <div class="modal-header">
+                <h5 class="modal-title text-light" id="exampleModalLongTitle">Create New Sender</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="/crm/create-new-sender" method="post" id="create_sender">
+
+                        {% csrf_token %}
+
+                        <div class="form-group mt-3">
+                          <label for="">induvidual/company name <span class="text-danger">*</span></label>
+                          <input type="text" required class="form-control" name="sender_name">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Street Address <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="street_address">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">City <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="city">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">State <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="state">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Zip <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="zip">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Phone <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="phone">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Email <span class="text-danger">*</span></label>
+                            <input type="email" required class="form-control" name="email">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">company website</label>
+                            <input type="text" class="form-control" name="company_website">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">company logo</label><br>
+                            <button class="btn btn-info" type="button" onclick="document.getElementById('company_file').click();">upload</button>
+                            <input type="file" name="company_file" id="company_file" accept="image/png, image/jpeg">
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn_ss_close" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn_ss btn-primary">Create New Sneder</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Receipt Modal -->
+        <div class="modal fade" id="createInvReceiptModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-midnight">
+                <div class="modal-header">
+                <h5 class="modal-title text-light" id="exampleModalLongTitle">Create New Recipient</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="/crm/create-new-sender" method="post" id="create_receipt">
+
+                        {% csrf_token %}
+
+                        <div class="form-group mt-3">
+                          <label for="">Receient name <span class="text-danger">*</span></label>
+                          <input type="text" required class="form-control" name="receipt_name">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">company name</label>
+                            <input type="text" class="form-control" name="company_name">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Street Address <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="street_address_rs">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">City <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="city_rs">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">State <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="state_rs">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Zip <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="zip_rs">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Phone <span class="text-danger">*</span></label>
+                            <input type="text" required class="form-control" name="phone_rs">
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="">Email <span class="text-danger">*</span></label>
+                            <input type="email" required class="form-control" name="email_rs">
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn_rs_close" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn_rs btn-primary">Create New Sneder</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        {% csrf_token %}
+
+
+        </div>
+      </div>
+      <footer class="footer">
+        <div class="container-fluid">
+          <nav class="float-left">
+            <ul>
+            </ul>
+          </nav>
+          <div class="copyright float-right">
+            &copy;
+            <script>
+              document.write(new Date().getFullYear())
+            </script>, anangtawiah.com
+          </div>
+          <!-- your footer here -->
+        </div>
+      </footer>
+    </div>
+
+    <script>
+        var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        var i = 1
+        $(document).on('click', '.btn-add', function(){
+            i++;
+            $("#dynamic-field").append(
+                '<tr id="row'+i+'"><td><input class="form-control" name="item_name[]" type="text" placeholder="item name" /></td><td><input class="form-control" id="qt_'+i+'" onchange="sumItems('+i+')" name="qty[]" type="text" placeholder="qty" /></td><td><input class="form-control" onchange="sumItems('+i+')" id="uni_'+i+'" name="unit_price[]" type="text" placeholder="unit price" /></td><td><input class="form-control" id="am_'+i+'" name="amount[]" type="text" placeholder="amount" /></td><td><button id="'+i+'" class="btn btn-danger btn-remove" type="button"><span> <i class="material-icons">remove</i> </span></button></td></tr>'
+            );
+        });
+
+        function sumItems(row_id){
+            qty = document.getElementById("qt_"+row_id).value
+            unit = document.getElementById("uni_"+row_id).value
+            amount = document.getElementById("am_"+row_id)
+
+            total_am = parseFloat(qty) * parseFloat(unit)
+
+            if (isNaN(total_am) != true){
+                amount.value = total_am
+                // console.log()
+            }
+        }
+
+        $(document).on('click', '.btn-remove', function(){
+            var btn_id = $(this).attr('id');
+
+            $("#row"+btn_id).remove();
+        });
+
+
+        var toastMixin = Swal.mixin({
+            toast: true,
+            icon: 'success',
+            title: 'General Title',
+            animation: false,
+            background: 'black',
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        $(".sender_info").click(function(){
+            user_name = $(this).text()
+
+            $(".inv-sel").text(user_name);
+            $('input[name="invoice_sender"]').val(user_name);
+        })
+
+        $(".receipt_info").click(function(){
+            user_name = $(this).text()
+
+            $(".inv-rep").text(user_name);
+            $('input[name="invoice_receipt"]').val(user_name);
+        })
+
+        $("#create_receipt").submit(function(e){
+            var fd = new FormData();
+
+            fd.append( 'receipt_name', $('[name="receipt_name"]').val() );
+            fd.append( 'street_address', $('[name="street_address_rs"]').val() );
+            fd.append( 'city', $('[name="city_rs"]').val() );
+            fd.append( 'state', $('[name="state_rs"]').val() );
+            fd.append( 'zip', $('[name="zip_rs"]').val() );
+            fd.append( 'phone', $('[name="phone_rs"]').val() );
+            fd.append( 'email', $('[name="email_rs"]').val() );
+            fd.append( 'company_name', $('[name="company_name"]').val() );
+
+
+            $.ajax({
+                url:"create-new-receipt",
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    console.log(data)
+                    
+                    if(data == "user_exists"){
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Receipt Already Exists',
+                            icon: 'error'
+                        });
+
+                        $(".inv-rep").text($('[name="receipt_name"]').val());
+                        $('input[name="invoice_receipt"]').val($('[name="receipt_name"]').val());
+                        
+                        $(".btn_rs_close").trigger("click");
+                    }else if(data == 'success'){
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'New Sender Saved'
+                        });
+
+                        $(".inv-rep").text($('[name="receipt_name"]').val());
+                        $('input[name="invoice_receipt"]').val($('[name="receipt_name"]').val());
+
+                        $(".btn_rs_close").trigger("click");
+                    }else{
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Saving Error',
+                            icon: 'error'
+                        });
+
+                        $(".btn_rs_close").trigger("click");
+                    }
+                }
+            });
+
+            return false;
+
+
+        })
+
+
+        $("#create_sender").submit(function(e){
+        // $(".btn_ss").click(function(){
+
+            var fd = new FormData();
+            var form = $(this);
+
+            // fd.append(form)
+            fd.append( 'file', $("#company_file")[0].files[0] );
+            fd.append( 'sender_name', $('[name="sender_name"]').val() );
+            fd.append( 'street_address', $('[name="street_address"]').val() );
+            fd.append( 'city', $('[name="city"]').val() );
+            fd.append( 'state', $('[name="state"]').val() );
+            fd.append( 'zip', $('[name="zip"]').val() );
+            fd.append( 'phone', $('[name="phone"]').val() );
+            fd.append( 'email', $('[name="email"]').val() );
+            fd.append( 'company_website', $('[name="company_website"]').val() );
+
+            // console.log(fd)
+
+            $.ajax({
+                url:"create-new-sender",
+                method: 'post',
+                headers: {'X-CSRFToken': csrftoken},
+                data: fd,
+                processData: false,
+                contentType: false,
+                // dataType: "json",
+                success: function(data){
+                    console.log(data)
+                    
+                    if(data == "user_exists"){
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Sender Already Exists',
+                            icon: 'error'
+                        });
+
+                        $(".inv-sel").text($('[name="sender_name"]').val());
+                        $('input[name="invoice_sender"]').val($('[name="sender_name"]').val());
+                        
+                        $(".btn_ss_close").trigger("click");
+                    }else if(data == 'success'){
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'New Sender Saved'
+                        });
+
+                        $(".inv-sel").text($('[name="sender_name"]').val());
+                        $('input[name="invoice_sender"]').val($('[name="sender_name"]').val());
+
+                        $(".btn_ss_close").trigger("click");
+                    }else{
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Saving Error',
+                            icon: 'error'
+                        });
+
+                        $(".btn_ss_close").trigger("click");
+                    }
+                }
+            });
+
+            return false;
+        })
+
+        $("#create_invoice").submit(function(e){
+            
+            var sender = $('input[name="invoice_sender"]').val();
+            var receipt = $('input[name="invoice_receipt"]').val();
+
+            mssg = "Required Field"
+
+            if (sender != ""){
+                $(".sender_err").text("")
+            }else{
+                $(".sender_err").text(mssg)
+            }
+
+            if (receipt != ""){
+                $(".receipt_err").text("")
+            }else{
+                $(".receipt_err").text(mssg)
+            }
+
+            if (sender != "" || receipt != ""){
+                var form = $(this);
+
+                console.log(form)
+
+                $.ajax({
+                    url:"create-new-invoice",
+                    method: 'post',
+                    headers: {'X-CSRFToken': csrftoken},
+                    data: form.serialize(),
+                    beforeSend: function(data){
+                        $(".save_activity_animation").show();
+                    },
+                    success: function(data){
+                        $(".save_activity_animation").hide();
+                        if(data == "invoice_exists"){
+                            
+                            toastMixin.fire({
+                                animation: true,
+                                title: 'Invoice Already Exists',
+                                icon: 'error'
+                            });
+                            
+                        }else if(data == 'success'){
+                            
+                            toastMixin.fire({
+                                animation: true,
+                                title: 'Invoice Created'
+                            });
+
+                        }else{
+                            
+                            toastMixin.fire({
+                                animation: true,
+                                title: 'Invoice Creating Error',
+                                icon: 'error'
+                            });
+
+                        }
+                    }
+                })
+            }
+
+            return false;
+        })
+
+    </script>
+
+<style>
+    .green-check{
+      padding: 0.5rem;
+      padding-top: 1rem;
+      border: 1px solid #278267;
+      border-radius: 10px;
+      color: #278267;
+    }
+
+    .red-check{
+      padding: 0.5rem;
+      padding-top: 1rem;
+      border: 1px solid #d22824;
+      border-radius: 10px;
+      color: #d22824;
+    }
+
+    .cssload-loader-walk {
+      width: 70px;
+      height: 28px;
+      position: absolute;
+      left: 50%;
+      display: none;
+      transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+    }
+    .cssload-loader-walk > div {
+      content: "";
+      width: 14px;
+      height: 14px;
+      background: #029eb1;
+      border-radius: 100%;
+      position: absolute;
+      animation: cssload-animate 1.5s linear infinite;
+        -o-animation: cssload-animate 1.5s linear infinite;
+        -ms-animation: cssload-animate 1.5s linear infinite;
+        -webkit-animation: cssload-animate 1.5s linear infinite;
+        -moz-animation: cssload-animate 1.5s linear infinite;
+    }
+    .cssload-loader-walk > div:nth-of-type(1) {
+      animation-delay: -0.3s;
+        -o-animation-delay: -0.3s;
+        -ms-animation-delay: -0.3s;
+        -webkit-animation-delay: -0.3s;
+        -moz-animation-delay: -0.3s;
+    }
+    .cssload-loader-walk > div:nth-of-type(2) {
+      animation-delay: -0.6s;
+        -o-animation-delay: -0.6s;
+        -ms-animation-delay: -0.6s;
+        -webkit-animation-delay: -0.6s;
+        -moz-animation-delay: -0.6s;
+    }
+    .cssload-loader-walk > div:nth-of-type(3) {
+      animation-delay: -0.9s;
+        -o-animation-delay: -0.9s;
+        -ms-animation-delay: -0.9s;
+        -webkit-animation-delay: -0.9s;
+        -moz-animation-delay: -0.9s;
+    }
+    .cssload-loader-walk > div:nth-of-type(4) {
+      animation-delay: -1.2s;
+        -o-animation-delay: -1.2s;
+        -ms-animation-delay: -1.2s;
+        -webkit-animation-delay: -1.2s;
+        -moz-animation-delay: -1.2s;
+    }
+
+
+
+    @keyframes cssload-animate {
+      0% {
+        left: 70px;
+        top: 0;
+      }
+      80% {
+        left: 0;
+        top: 0;
+      }
+      85% {
+        left: 0;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      90% {
+        width: 28px;
+        height: 10px;
+      }
+      95% {
+        left: 70px;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      100% {
+        left: 70px;
+        top: 0;
+      }
+    }
+
+    @-o-keyframes cssload-animate {
+      0% {
+        left: 70px;
+        top: 0;
+      }
+      80% {
+        left: 0;
+        top: 0;
+      }
+      85% {
+        left: 0;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      90% {
+        width: 28px;
+        height: 10px;
+      }
+      95% {
+        left: 70px;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      100% {
+        left: 70px;
+        top: 0;
+      }
+    }
+
+    @-ms-keyframes cssload-animate {
+      0% {
+        left: 70px;
+        top: 0;
+      }
+      80% {
+        left: 0;
+        top: 0;
+      }
+      85% {
+        left: 0;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      90% {
+        width: 28px;
+        height: 10px;
+      }
+      95% {
+        left: 70px;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      100% {
+        left: 70px;
+        top: 0;
+      }
+    }
+
+    @-webkit-keyframes cssload-animate {
+      0% {
+        left: 70px;
+        top: 0;
+      }
+      80% {
+        left: 0;
+        top: 0;
+      }
+      85% {
+        left: 0;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      90% {
+        width: 28px;
+        height: 10px;
+      }
+      95% {
+        left: 70px;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      100% {
+        left: 70px;
+        top: 0;
+      }
+    }
+
+    @-moz-keyframes cssload-animate {
+      0% {
+        left: 70px;
+        top: 0;
+      }
+      80% {
+        left: 0;
+        top: 0;
+      }
+      85% {
+        left: 0;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      90% {
+        width: 28px;
+        height: 10px;
+      }
+      95% {
+        left: 70px;
+        top: -14px;
+        width: 14px;
+        height: 14px;
+      }
+      100% {
+        left: 70px;
+        top: 0;
+      }
+    }
+
+    .activity_email{
+      width: 70px;
+      color: #00bcd4;
+      border-radius: 10px;
+      border: 1px #00bcd4 solid;
+      padding: 0.5rem 1rem !important;
+    }
+
+    .activity_call{
+      width: 70px;
+      color: crimson;
+      border-radius: 10px;
+      border: 1px crimson solid;
+      padding: 0.5rem 1rem !important;
+    }
+
+    .activity_invoice{
+      width: 70px;
+      color: #f5700c;
+      border-radius: 10px;
+      border: 1px #f5700c solid;
+      padding: 0.5rem 1rem !important;
+    }
+
+    .activity_other{
+      width: 70px;
+      color: #288c6c;
+      border-radius: 10px;
+      border: 1px #288c6c solid;
+      padding: 0.5rem 1rem !important;
+    }
+  </style>
+  
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href='{% static "css/blog.css" %}'>
+
+<div class="page-title-wrap">
+    <h2 class="page-title">Blog Index</h2>
+</div><!-- .page-title-wrap -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="margin-bottom: 10px;">
+        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Blog Index</li>
+    </ol>
+</nav><!-- .breadcrumb -->
+<!-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="border-width: 0;">
+        <li class="nav-item active font-weight-bold">Short By:</li>
+        <li class="nav-item ml-3" aria-current="page"><a href="#">Latest</a></li>
+        <li class="nav-item ml-3" aria-current="page"><a href="">Curated</a></li>
+        <li class="nav-item ml-3" aria-current="page"><a href="">Popular</a></li>
+
+        <li class="nav-item active ml-5 font-weight-bold">Show:</li>
+        <li class="nav-item ml-3" aria-current="page"><a href="#">All</a></li>
+        <li class="nav-item ml-3" aria-current="page"><a href="#">Onpoint</a></li>
+    </ol>
+</nav> -->
+
+{{content | safe}}
+
+{% endblock %}

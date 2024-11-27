@@ -1,0 +1,115 @@
+.navbar{
+    justify-content: flex-start;
+    display: block !important;
+}
+
+.bg-dark-black{
+    background-color: #000000;
+}
+
+/*
+.anan-nav-icon {
+    background-image: url("https://res.cloudinary.com/hj7llsxyl/image/upload/v1631623101/icons/toggle_cuhnym.svg") !important;
+    width: 18px;
+    height: 16px;
+}
+*/
+
+.navbar-toggler {
+    border:none;
+    margin-top: 15px !important;
+}
+/* 
+.navbar-brand{
+    background-image: url("https://res.cloudinary.com/hj7llsxyl/image/upload/v1631623205/anan-logo_nhuutx.png") !important;
+    width: 233px;
+    height: 180px;
+} */
+
+.icon-div{
+    max-width: 20% !important;
+    float: right;
+}
+
+.search-icon-nav {
+    /* width: 40px;
+    height: 35px; */
+    margin-top: 20px;
+    float: right;
+	color: transparent;
+	cursor: pointer;
+    border: none;
+    margin-right: 25px;
+}
+
+/* Demo 2 */
+#demo-2 input[type=search] {
+	background: url("https://res.cloudinary.com/hj7llsxyl/image/upload/v1631623101/icons/search-icon_ovdkbx.svg") no-repeat 9px center !important ;
+    width: 40px;
+    height: 35px;
+    margin-top: 15px;
+    float: right;
+	color: transparent;
+	cursor: pointer;
+    border: none;
+    margin-right: 20px;
+}
+#demo-2 input[type=search]:focus {
+	width: 130px;
+	padding-left: 32px;
+	color: #ffc83a;
+	background-color: #000;
+	cursor: auto;
+}
+#demo-2 input:-moz-placeholder {
+	color: transparent;
+}
+#demo-2 input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+.anan-cart-icon{
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-top: 20px;
+    margin-left: 100px;
+}
+
+.social-icon{
+    color: #fff;
+    float: right;
+    font-size: 20px;
+}
+
+.social-icon:hover{
+    color: #ffc83a;
+}
+
+.underline-div{
+    width: 78%;
+    padding: 20px;
+    float: right;
+    margin-top: -40px;
+}
+
+.nav-underline{
+    color: #fff;
+    opacity: 50%;
+    width: 100%;
+    border: 1px solid;
+    border-top: 0.5px solid rgba(0,0,0,.1);
+    border-top-width: 0.5px;
+    border-top-style: solid;
+    border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (max-width: 1100px) {
+    #demo-2{
+        display: none;
+    }
+
+    .nav-right-social{
+        margin-left: 20px !important;
+    }
+}

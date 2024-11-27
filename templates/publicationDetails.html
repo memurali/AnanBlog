@@ -1,0 +1,328 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  .pub-buy-list{
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+
+  span{
+    color: #fff !important;
+  }
+</style>
+
+<div class="page-title-wrap">
+  <h2 class="page-title">{{pub.category}}</h2>
+</div><!-- .page-title-wrap -->
+<nav aria-label="breadcrumb">
+ <ol class="breadcrumb">
+   <li class="breadcrumb-item"><a href="home">Home</a></li>
+   <li class="breadcrumb-item active" aria-current="page">Product</li>
+ </ol>
+</nav><!-- .breadcrumb -->
+
+<div class="row">
+  <div class="col-md-7">
+    <h3 style="font-size: 34px; font-weight: 600;">
+        {{pub.heading}}
+    </h3>
+    <div class="ap-border"></div>
+
+    <h6 class="mt-4 font-weight-bold">{{pub.category}}</h6>
+
+    <h4 class="mt-4 font-weight-bold">
+        Share:
+        <nav class="navbar navbar-expand rounded" style="margin-top: -33px; margin-left: 75px;">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item mr-4">
+                <a href="facebook.com" target="blank" class="social-icon">
+                  <i class="fab fa-facebook "></i>
+                </a>
+              </li>
+              <li class="nav-item mr-4">
+                <a href="facebook.com" target="blank" class="social-icon">
+                  <i class="fab fa-twitter"></i>
+                </a>
+              </li>
+              <li class="nav-item mr-4">
+                <a href="facebook.com" target="blank" class="social-icon">
+                  <i class="fab fa-google"></i>
+                </a>
+              </li>
+              <li class="nav-item mr-4">
+                <a href="facebook.com" target="blank" class="social-icon">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+              </li>
+            </ul>
+        </nav>
+    </h4>
+  </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-4 col-blog-index">
+                <img src="{{pub.image.url}}" style="height: 320px; width: 100%;" alt="" srcset="">
+            </div>
+            <div class="col col-blog-index">
+                <p>{{pub.publishYear}}</p>
+                <h3 style="font-size: 30px; font-weight: 600;">{{pub.title}}</h3>
+                <p>{{pub.shortDescription}}</p>
+                <p><strong>{{pub.authorId}}</strong></p>
+
+                <h3 style="font-size: 34px; font-weight: 600; margin-top: 2rem; color: #FE8900">$ {{pub.priceHardCover}}</h3>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-3">
+            <div class="col">
+                <p>{{pub.longDescripton | safe}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-block product-summary-block">
+            <h3 class="text-light">Buy This Book</h3>
+            <hr class="text-light">
+
+            <p>
+              <button class="btn" style="color: #797979;" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fas fa-chevron-down"></i> <strong style="color: #fff;"> eBook</strong>
+              </button>
+              <h3 style="float: right; margin-top: -40px;">${{pub.priceEbook}}</h3>
+            </p>
+            <div class="collapse" id="collapseExample">
+
+              <div class="card card-body" style="background-color: #1f2123; min-width: 100%;">
+                <form action="/set-cart" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="productId" value="{{pub.id}}">
+                  <input type="hidden" name="productName" value="{{pub.title}}">
+                  <input type="hidden" name="productType" value="ebook">
+                  <input type="hidden" name="price" value="{{pub.priceEbook}}">
+                  <input type="hidden" name="stock" value="0">
+
+                  {% if ebookOwned == True %}
+                  <a href="{{pub.ebookFile.url}}" style="color: #1f2123 !important;" class="btn btn-theme btn-block">View Your eBook 
+                    <span><img src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631808142/icons/Arrow_13_nw5sko.png" alt=""></span>
+                  </a>
+                  {% else %}
+                  <button type="submit" class="btn btn-theme btn-block">Buy eBook 
+                    <span><img src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631808142/icons/Arrow_13_nw5sko.png" alt=""></span>
+                  </button>
+                  {% endif %}
+
+                </form>
+
+                <ul class="mt-3" style="padding: 15px;">
+                  <li class="pub-buy-list">ISBN {{pub.softcoverISBN}}</li>
+                  <li class="pub-buy-list">Digitally watermarked, DRM-free</li>
+                  <li class="pub-buy-list">Included format: eBook</li>
+                  <li class="pub-buy-list">ebooks can be used on all reading devices</li>
+                  <li class="pub-buy-list">Immediate eBook download after purchase</li>
+                </ul>
+
+              </div>
+            </div>
+
+
+            <p>
+              {% if hbookOwned == True %}
+              <button class="btn" disabled style="color: #797979;" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fas fa-chevron-down"></i> <strong style="color: #fff;"> HardCover</strong>
+              </button>
+              {% else %}
+                <button class="btn" style="color: #797979;" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
+                  <i class="fas fa-chevron-down"></i> <strong style="color: #fff;"> HardCover</strong>
+                </button>
+              {% endif %}
+              <h3 style="float: right; margin-top: -40px;">${{pub.priceHardCover}}</h3>
+            </p>
+            <div class="collapse" id="collapseExample1">
+              
+              <div class="card card-body" style="background-color: #1f2123; min-width: 100%;">
+                <form action="/set-cart" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="productId" value="{{pub.id}}">
+                  <input type="hidden" name="productName" value="{{pub.title}}">
+                  <input type="hidden" name="productType" value="hardCover">
+                  <input type="hidden" name="price" value="{{pub.priceHardCover}}">
+                  <input type="hidden" name="stock" value="0">
+
+                  <button class="btn btn-theme btn-block">Buy HardCover 
+                    <span><img src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631808142/icons/Arrow_13_nw5sko.png" alt=""></span>
+                  </button>
+                </form>
+
+                <ul class="mt-3" style="padding: 15px;">
+                  <li class="pub-buy-list">ISBN {{pub.softcoverISBN}}</li>
+                  <li class="pub-buy-list">Digitally watermarked, DRM-free</li>
+                  <li class="pub-buy-list">Included format: eBook</li>
+                  <li class="pub-buy-list">ebooks can be used on all reading devices</li>
+                  <li class="pub-buy-list">Immediate eBook download after purchase</li>
+                </ul>
+
+              </div>
+            </div>
+
+            <form>
+              <div class="form-group payment-option">
+                  <label>Accepted Payment Method</label>
+                  <div>
+                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                      <label class="btn">
+                      <input type="radio">
+                      <img note="nowt" class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/paypal_ohji3q.png" alt="paypal">
+                      </label>
+                      <label class="btn">
+                      <input type="radio">
+                      <img note="nowt" class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/visa_tql9cf.png" alt="visa">
+                      </label>
+                      <label class="btn">
+                      <input type="radio">
+                      <img note="nowt" class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/master-card_kljfmd.png" alt="master card">
+                      </label>
+                      <label class="btn">
+                      <input type="radio">
+                      <img note="nowt" class="img-fluid" src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631782127/american-express_f0zuxc.png" alt="american express">
+                      </label>
+                      </div><!-- .btn-group -->
+                  </div>
+              </div><!-- .form-group -->
+            </form>
+
+        </div><!-- .form-block -->
+
+        {% if pub.highResCover != "" %}
+
+        <h2 style="border-bottom: 1px solid #FFCA30;">Services for this book</h2>
+        <a href="{{pub.highResCover.url}}" style="color: #FFCA30 !important; border-bottom: 1px solid #FFCA30;">Download High-Resolution Cover</a>
+
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+  <div class="col col-blog-index">
+    <h4 style="border-bottom: 1px solid #FFCA30; font-size:16px; font-weight: 500;">About The Textbook</h4>
+
+    <p class="mt-3">
+      {{pub.aboutTextbook}}
+    </p>
+  </div>
+
+  <div class="col col-blog-index">
+    <h4 style="border-bottom: 1px solid #FFCA30; font-size:16px; font-weight: 500;">About The Authors</h4>
+
+    <p class="mt-3">
+      {{pub.aboutAuthors}}
+    </p>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col col-blog-index">
+    <h2 style="border-bottom: 1px solid #FFCA30; width: 23%;">Table Of Contents</h2>
+  </div>
+</div>
+
+<div class="row mt-4">
+
+  {% for content in contents %}
+    <div class="col-6 col-blog-index pl-5 mt-2">
+      <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #797979;">
+        <div class="col col-no-pad">
+          <h6 style="font-size: 16px; font-weight: 600;">{{content.title}}</h6>
+
+        <form action="/set-cart" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="productId" value="{{content.pubid}}">
+          <input type="hidden" name="productName" value="{{content.title}}">
+          <input type="hidden" name="productType" value="ebook">
+          <input type="hidden" name="price" value="{{content.price}}">
+          <input type="hidden" name="stock" value="0">
+
+          {% if content.contentOwned == True %}
+
+            <a href="{{content.file}}" style="color: #1f2123 !important;" class="mt-3 btn btn-theme">
+              View Chapter
+            </a>
+          {% else %}
+          
+            <button class="mt-3 btn btn-theme">
+              buy chapter $ {{content.price}}
+            </button>
+
+          {% endif %}
+        </form>
+
+          
+        </div>
+        <div class="col-3">
+          <p class="text-right">{{content.pages}}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+
+
+<div class="row mt-5">
+  <div class="col col-no-pad">
+    <h2 style="border-bottom: 1px solid #FFCA30; width: 35%;">Bibliographic Information</h2>
+  </div>
+</div>
+
+<div class="row mt-4">
+
+  {% for bi in BiblographicTitles %}
+
+  <div class="col-4 col-blog-index pub-index-h3 col-no-pad mt-3 >
+    <h6 style="font-size: 16px; font-weight: 600;">{{bi.title}}</h6>
+    <p>{{bi.content}}</p>
+    <div style="border-bottom: 1px solid #797979; width: 80%;"></div>
+  </div>
+
+  {% endfor %}
+  
+</div>
+
+<style>
+  .swiss-holiday-statics li .swiss-tag{
+    color: #000 !important;
+  }
+</style>
+
+<script>
+  $('img').map(function(){
+        note = $(this).attr("note")
+
+        if(note == "nowt"){
+            //pass
+        }else{
+
+            $(this).watermark({
+              path: 'https://res.cloudinary.com/hj7llsxyl/image/upload/c_scale,w_50/v1633777404/anan-logo_nhuutx.png',
+              gravity: 'ne',
+              opacity: 0.7,
+              margin: 10,
+              outputWidth: 'auto',
+              outputHeight: 'auto',
+              fullOverlay: !1,
+            });
+
+            // anan-logo_nhuutx.png
+            // favicon_qgwuvj.png
+        }
+  }).get();
+</script>
+
+{% endblock %}

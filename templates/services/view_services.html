@@ -1,0 +1,77 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}">
+  <link rel="stylesheet" type="text/css"  href="{% static 'css/foundation-icons/foundation-icons.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.foundation.css">
+  <link rel="stylesheet" href="{% static 'css/service_app.css' %}">
+
+</head>
+
+<body>
+  <h2 class="text-center header_style">Service Category Table</h2>
+
+
+  <div class="grid-container-fluid client_view">
+    <table id="CategoryTable" class="display bordered-table" style="width:100%">
+      <thead>
+        <tr>
+          <th>Category ID</th>
+          <th>Category Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="off-canvas position-right invoice-export" id="edit_offCanvas" data-off-canvas>
+    <div class="grid-container-fluid">
+      <div class="grid-x grid-margin-x align-center">
+        <div class="input_width">
+          <h4 class="header_style">Update Category Details</h4>
+          <div class="form-container">
+            <form action="" id="edit_category_form">
+              <input type="hidden" name="category_id" id="category_id">
+
+              <label>Category Name
+                <input type="text" name="category_name" id="category_name">
+              </label>
+
+              <div class="buttons">
+                <button type="submit" class="button success">Update</button>
+                <button type="reset" class="button secondary">Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+
+
+<script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'js/vendor/what-input.js' %}"></script>
+<script src="{% static 'js/vendor/foundation.min.js' %}"></script>
+<script src="{% static 'js/vendor/dataTables.js' %}"></script>
+<script src="{% static 'js/vendor/dataTables.foundation.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/service_index.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    #output{
+        object-fit: cover;
+        width: 320px;
+        height: 300px;
+        box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+        z-index: 0;
+    }
+</style>
+
+<div class="page-title-wrap">
+    <h2 class="page-title">Profile</h2>
+</div><!-- .page-title-wrap -->
+
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="home">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Portfolio</li>
+</ol>
+</nav><!-- .breadcrumb -->
+
+{% if user_not_exists == True %}
+
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">User Not Found</h1>
+            <img style="margin-left: 35%; height: 450px;" src="{% static 'images/undraw_Taken_re_yn20.svg' %}" alt="">
+        </div>
+    </div>
+
+{% else %}
+
+<div class="row">
+    <div class="col-md-4">
+        
+        {% if user_info.image == '' %}
+            <img src="{% static 'images/profile/user-place-holder.png' %}" id="output" alt="">
+        {% else %}
+            <img src="{% static 'images/' %}{{user_info.image}}" id="output" alt="">
+        {% endif %}
+
+        <p class="mt-4 h5">
+            Membership Status: <strong class="text-warning"> {{user_sub}} </strong> 
+        </p>
+        
+        <p class="mt-4">
+            Follow me on 
+
+            <a href="{{user_info.facebook}}" target="blank" class="ml-2">
+                <img src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631816992/icons/Group_460_bbi5eg.png" alt="">
+            </a>
+
+            <a href="{{user_info.twitter}}" target="blank" class="ml-2">
+                <img src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631816991/icons/Group_459_epl6iq.png" alt="">
+            </a>
+
+            <a href="{{user_info.linkedin}}" target="blank" class="ml-2">
+                <img src="https://res.cloudinary.com/hj7llsxyl/image/upload/v1631816990/icons/Group_458_chb5s7.png" alt="">
+            </a>
+        </p>
+    </div>
+
+    <div class="col">
+        <h3>{{user.username}}</h3>
+        
+        <br>
+        <p>Address</p>
+        <p>{{user_info.address}}</p>
+
+        <br>
+        <p>Email</p>
+        <p>{{user.email}}</p>
+        
+        <br>
+        <p>Phone</p>
+        <p>{{user_info.phone}}</p>
+
+        <br><br>
+
+        <h6>
+            Details
+            <div class="w-100" style="width: 92%; border-bottom: 1px solid #444444; float: right; margin-top: 8px;"></div>
+        </h6>
+
+        <br><br>
+
+        <h4>Education</h4>
+        <br>
+        {% for edu in edu_sp %}
+            <p>{{edu}}</p>
+        {% endfor %}
+        <br>
+        <div class="w-100" style="border-bottom: 1px solid #444444; float: right; margin-top: 8px;"></div>
+
+
+        <br><br>
+
+        <h4>Media About</h4>
+        <br>
+        <p>{{user_info.mediaAbout}}</p>
+        <br>
+        <div class="w-100" style="border-bottom: 1px solid #444444; float: right; margin-top: 8px;"></div>
+
+
+        <br><br>
+
+        <h4>Books</h4>
+        
+        <div class="row">
+            <div class="col-3 mt-3">
+                Books Name
+            </div>
+            <div class="col-3 mt-3">
+                Books Name
+            </div>
+            <div class="col-3 mt-3">
+                Books Name
+            </div>
+            <div class="col-3 mt-3">
+                Books Name
+            </div>
+            <div class="col-3 mt-3">
+                Books Name
+            </div>
+            <div class="col-3 mt-3">
+                Books Name
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="mt-10"></div>
+{% endif %}
+
+{% endblock %}
