@@ -39,6 +39,7 @@ def contactus(request):
 def CategoryDetails(request):
     if request.method == 'POST':
         category_name = request.POST.get('category_name')
+        Description = request.POST.get('Description')
 
         if not category_name:
             return JsonResponse({'error': 'Category name is required'}, status=400)
@@ -55,7 +56,8 @@ def CategoryDetails(request):
             # Create the new category
             ServiceCategory.objects.create(
                 service_id=new_service_id,
-                category=category_name
+                category=category_name,
+                Description = Description
             )
 
             return JsonResponse({'message': 'Category created successfully'}, status=201)
@@ -73,7 +75,8 @@ def CategoryDetails(request):
                 categories = ServiceCategory.objects.get(service_id=service_id)
                 categories_data = {
                     'service_id': categories.service_id,
-                    'category': categories.category}
+                    'category': categories.category,
+                    'Description': categories.Description}
                 return JsonResponse({'categories': categories_data})
             else:
                 categories = list(ServiceCategory.objects.all().values())
@@ -91,8 +94,7 @@ def CategoryDetails(request):
             data = json.loads(request.body)
             category_id = data.get('id')
             new_category_name = data.get('category_name')
-
-            print(data, category_id, new_category_name,">>>>>>>>>>>>>")
+            Description = data.get('Description')
 
             if not category_id or not new_category_name:
                 return JsonResponse({'error': 'service_id and category are required'}, status=400)
@@ -105,6 +107,7 @@ def CategoryDetails(request):
 
             # Update the category name
             category.category = new_category_name
+            category.Description = Description
             category.save()
 
             return JsonResponse({'message': 'Category updated successfully'}, status=200)
@@ -145,6 +148,28 @@ def getcategory(request):
         # Initialize a cursor to execute raw SQL
         cursor = connection.cursor()
         cursor.execute("""SELECT * FROM "tbl_ServiceCategory" """)
+        columns = [col[0] for col in cursor.description]
+        location_list = [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+        cursor.close()
+        return JsonResponse({'u_id': location_list}, safe=False)
+
+    except Exception as e:
+        # Log the error (Optional)
+        print(f"Error: {str(e)}")
+
+        # Return an error message in case of failure
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+def findServiceDescription(request):
+    try:
+        # Initialize a cursor to execute raw SQL
+        category = request.POST.get('category')
+        cursor = connection.cursor()
+        cursor.execute(f"""SELECT * FROM "tbl_ServiceCategory" where category = '{category}' """)
         columns = [col[0] for col in cursor.description]
         location_list = [
             dict(zip(columns, row))

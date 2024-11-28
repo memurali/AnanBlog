@@ -11,6 +11,7 @@ urlpatterns = [
     
     path('CategoryDetails', views.CategoryDetails, name='CategoryDetails'),
     path('getcategory', views.getcategory, name='getcategory'),
+    path('findServiceDescription', views.findServiceDescription, name='findServiceDescription'),
 
     # Blogs 
     
