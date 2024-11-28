@@ -16,7 +16,7 @@ from publications.models import (
 )
 
 import json
-
+from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -249,6 +249,7 @@ def publicationDetails(request, pubid):
 
     return render(request, 'publicationDetails.html', context)
 
+@csrf_exempt
 @require_http_methods(["POST"])
 def contact_us(request):
 
@@ -288,10 +289,16 @@ def contact_us(request):
     html_message = render_to_string("email_template.html", context)
     plain_message = strip_tags(html_message)
 
+    # if settings.DEBUG:
+    #     to_email = "vivekcmaurya30@gmail.com"
+    # else:
+    #     to_email = " anang.tawiah@gmail.com"
+
     if settings.DEBUG:
-        to_email = "vivekcmaurya30@gmail.com"
+        to_email = "lakshmi.m@progressive-solution.com"
     else:
-        to_email = " anang.tawiah@gmail.com"
+        to_email = "lakshmi.m@progressive-solution.com"
+
     # to_email = "ffries6@gmail.com"
 
     mail = EmailMessage(

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from base.views import commonViews
+
 
 urlpatterns = [
     path('manage_services', views.Add_service),
@@ -9,4 +11,15 @@ urlpatterns = [
     
     path('CategoryDetails', views.CategoryDetails, name='CategoryDetails'),
     path('getcategory', views.getcategory, name='getcategory'),
+
+    # Blogs 
+    
+    path('Blogs', views.blogs, name='blogs'),
+    path('Blogs_details', views.blogs_details, name='blogs_details'),
+
+    # ABout
+    path('about', views.about, name='about'),
+    path('contactus', views.contactus, name='contactus'),
+    
+    path('set_contact', commonViews.contact_us),
 ]

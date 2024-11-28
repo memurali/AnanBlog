@@ -20,6 +20,21 @@ def Service_index(request):
 def Service_details(request):
     return render(request, 'services/Service_details.html')
 
+# Blogs 
+def blogs(request):
+    return render(request, 'Blogs/blog.html')
+
+def blogs_details(request):
+    return render(request, 'Blogs/blog-detail.html')
+
+# About 
+
+def about(request):
+    return render(request, 'about/about.html')
+
+def contactus(request):
+    return render(request, 'about/contactus.html')
+
 @csrf_exempt
 def CategoryDetails(request):
     if request.method == 'POST':

@@ -1,6 +1,5 @@
 {% load static %}
 {% block content %}
-
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -8,7 +7,7 @@
   <meta charset="utf-8" />
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anang Tawiah</title>
+  <title>Blog</title>
   <link rel="stylesheet" href='{% static "css/app.css" %}'>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,6 +52,7 @@
                 <div class="container">
                   <div class="main-options">
                   </div>
+                </div>
 
                   <hr>
 
@@ -148,41 +148,248 @@
 
     </div>
   </header>
-  <div class="grid-container fluid hero-sec">
-
-    <div class="grid-x align-middle  hero-margin-l">
-
-
-      <div class="cell medium-6 text-content">
-        <h2>An abstract and personal approach, defined by a mood or a feeling.</h2>
-
-      </div>
-
-
-      <div class="cell medium-6 text-right welcome-container">
-        <h1><span class="welcome-text-large">Wel</span> <span class="welcome-text">Come.</span></h1>
-      </div>
-
-    </div>
-
-
-    <div class="grid-x hero-margin-l hero-margin-t ">
-      <div class="cell small-12 medium-6 hero-txt">
-        <p>With our crew of informed video, audio, and editing technicians, we aim for a high quality, polished product
-          to
-          achieve our goals.</p>
-        <p class="p-margin-t">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc ullamcorper condimentum
-          augue nisi ornare vitae viverra justo. At elit suspendisse diam commodo lacinia.</p>
+  <div class="grid-container fluid consulting-hero">
+    <div class="grid-x">
+      <div class="cell medium-6 consulting-hero__text">
+        <h4>Blog</h4>
+        <div class="heading-underline"></div>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc ullamcorper condimentum augue nisi ornare
           vitae viverra justo. At elit suspendisse diam commodo lacinia.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc ullamcorper condimentum augue nisi ornare
+          vitae.</p>
       </div>
-      <div class="cell small-12 medium-6">
-        <div class="hero-line"></div>
+      <div class="cell medium-6"></div>
+    </div>
+    <div class="grid-x">
+      <div class="cell">
+        <h1><span class="blog-txt-large">Blog.</span></h1>
+      </div>
+      <div class="cell"></div>
+    </div>
+
+  </div>
+
+  <!-- blog search -->
+
+  <div class="search-section grid-container">
+    <div class="grid-x align-middle">
+      <div class="cell large-5 small-12 search-option">
+        <label for="search-input" class="search-label">Search:</label>
+        <div class="input-group">
+          <input id="search-input" type="text" class="input-group-field" placeholder="">
+          <div class="input-group-button">
+            <button type="button" class="button search-button">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="cell large-5 small-9 filters">
+        <div class="custom-select">
+          <select class="type-filter">
+            <option>Type</option>
+          </select>
+        </div>
+        <div class="custom-select">
+          <select class="year-filter">
+            <option>Year</option>
+          </select>
+        </div>
+        <div class="custom-select">
+          <select class="month-filter">
+            <option>Month</option>
+          </select>
+        </div>
+      </div>
+      <div class="cell large-2 small-3">
+        <button class="button view-all-button">View All</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="featured-publications grid-container">
+
+    <h3>Featured Publications</h3>
+    <div class=" grid-x grid-margin-x featured-publications__innerblock">
+
+      <div class="cell small-12 medium-6 left-news">
+        <h4>March 2, 2021 | Press Release</h4>
+        <img src="" alt="img" style="height: 60%;">
+        <h1>West Monroe Promotes 7 New Managing Directors</h1>
       </div>
 
+
+      <div class="cell small-12 medium-6 right-news">
+        <ul class="news-list">
+          <li>
+            <span class="news-date">March 2, 2021 | Press Release</span>
+            <p>West Monroe Receives 100 Score in 2021 Corporate Equality Index</p>
+          </li>
+          <li>
+            <span class="news-date">March 2, 2021 | Press Release</span>
+            <p>West Monroe Receives 100 Score in 2021 Corporate Equality Index</p>
+          </li>
+          <li>
+            <span class="news-date">March 2, 2021 | Press Release</span>
+            <p>West Monroe Receives 100 Score in 2021 Corporate Equality Index</p>
+          </li>
+          <li>
+            <span class="news-date">March 2, 2021 | Press Release</span>
+            <p>West Monroe Receives 100 Score in 2021 Corporate Equality Index</p>
+          </li>
+        </ul>
+        <button class="button view-all-news">VIEW ALL NEWS <span class="arrow">→</span></button>
+      </div>
     </div>
 
 
+  </div>
+
+  <div class="publication-section grid-container">
+
+    <div class="grid-x grid-margin-x grid-padding-y publication-grid">
+      <div class="cell small-12 medium-4">
+        <a href="#" class="show-all-link">Show All <span class="arrow">→</span></a>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-4">
+        <div class="publication-card">
+          <h4>Swiss Holiday 2021 - Virtual Edition</h4>
+          <p><strong>Keywords:</strong> Nolly, Ipsum, Lllllll, Uuuu, Uuuuu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="publication-section2 grid-container">
+    <div class="grid-x grid-margin-x grid-padding-y publication-grid2">
+
+      <div class="cell small-12 medium-6">
+        <div class="date-content-section">
+          <div class="date-box">
+            <span class="day">22nd</span>
+            <span class="month">Apr</span>
+          </div>
+          <div class="event-content">
+            <h4>MoVe The Alps - Conference On Velotourism</h4>
+            <p>Online, April 22, 2021</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-6">
+        <div class="date-content-section">
+          <div class="date-box">
+            <span class="day">22nd</span>
+            <span class="month">Apr</span>
+          </div>
+          <div class="event-content">
+            <h4>MoVe The Alps - Conference On Velotourism</h4>
+            <p>Online, April 22, 2021</p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="cell small-12 medium-6">
+        <div class="date-content-section">
+          <div class="date-box">
+            <span class="day">22nd</span>
+            <span class="month">Apr</span>
+          </div>
+          <div class="event-content">
+            <h4>MoVe The Alps - Conference On Velotourism</h4>
+            <p>Online, April 22, 2021</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell small-12 medium-6">
+        <div class="date-content-section">
+          <div class="date-box">
+            <span class="day">22nd</span>
+            <span class="month">Apr</span>
+          </div>
+          <div class="event-content">
+            <h4>MoVe The Alps - Conference On Velotourism</h4>
+            <p>Online, April 22, 2021</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="grid-container twitter-comment">
+    <div class="grid-x ">
+      <div class="cell small-12 medium-6">
+        <a href="#" class="show-all-link">Show All <span class="arrow">→</span></a>
+      </div>
+      <div class="cell small-12 medium-6">
+        <p><span class="from">from</span> <span class="name">@martin</span></p>
+        <div class="twitter-comment__content">
+          <p class="name">@martin_nydegger</p>
+          <p>
+            <p>It would have been nice! # Swiss # National Day 2021 for @ rogerfederer 🎾 - April, April But we continue
+              to celebrate</p><span class="hashtag"># Switzerland on August 1st! # April Fool's Day #
+              IneedSwitzerland</span> <span class="name-tag">@ Blickch </span> https: //
+            www.blick.ch/politik/zu-ehren-von-roger-federer-politicians-want-to-postpone-national-holiday-id16432769.html
+            ...</span>
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="grid-container service-section">
@@ -193,7 +400,69 @@
     </div>
 
     <!-- Grid for Services -->
-    <div class="grid-x grid-margin-x services-grid" id="cat_service"></div>
+    <div class="grid-x grid-margin-x services-grid">
+
+      <!-- Service Item 1 -->
+      <div class="cell small-12 medium-6  service-item align-start">
+        <h1>01</h1>
+        <h2>Research<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 2 -->
+      <div class="cell small-12 medium-6  service-item align-start">
+        <h1>02</h1>
+        <h2>Digital<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 3 -->
+      <div class="cell small-12 medium-6 service-item align-end">
+        <h1>03</h1>
+        <h2>Economic Development<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 4 -->
+      <div class="cell small-12 medium-6  service-item align-end">
+        <h1>04</h1>
+        <h2>Data and Data science<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 5 -->
+      <div class="cell small-12 medium-6  service-item align-start">
+        <h1>05</h1>
+        <h2>Managed Services<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 6 -->
+      <div class="cell small-12 medium-6  service-item align-start">
+        <h1>06</h1>
+        <h2>Program and Project Management<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 7 -->
+      <div class="cell small-12 medium-6  service-item align-end">
+        <h1>07</h1>
+        <h2>Strategy<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 8 -->
+      <div class="cell small-12 medium-6  service-item align-end">
+        <h1>08</h1>
+        <h2>Technology<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 9 -->
+      <div class="cell small-12 medium-6  service-item align-start">
+        <h1>09</h1>
+        <h2>Risk Management<span class="highlight">.</span></h2>
+      </div>
+
+      <!-- Service Item 10 -->
+      <div class="cell small-12 medium-6  service-item align-start">
+        <h1>10</h1>
+        <h2>Training<span class="highlight">.</span></h2>
+      </div>
+
+    </div>
     <div class="service-sec__scroll"><span class="service-sec-scroll-up">Scroll Up</span></div>
 
   </div>
@@ -463,31 +732,31 @@
           </div>
 
           <div class="cell contact-form">
-            <form>
+            <form id="contact_form">
               <div class="grid-x grid-padding-x">
                 <div class="cell medium-6">
                   <label>First Name
-                    <input type="text" placeholder="Enter your first name" required>
+                    <input type="text" name="first_name" placeholder="Enter your first name" required>
                   </label>
                 </div>
                 <div class="cell medium-6">
                   <label>Last Name
-                    <input type="text" placeholder="Enter your last name" required>
+                    <input type="text" name="last_name" placeholder="Enter your last name" required>
                   </label>
                 </div>
                 <div class="cell medium-12">
                   <label>Email
-                    <input type="email" placeholder="Enter your email" required>
+                    <input type="email" name="email" placeholder="Enter your email" required>
                   </label>
                 </div>
                 <div class="cell medium-12">
                   <label>Phone
-                    <input type="tel" placeholder="Enter your phone number" required>
+                    <input type="tel" name="phone" placeholder="Enter your phone number" required>
                   </label>
                 </div>
                 <div class="cell medium-12">
                   <label>Consultation
-                    <select>
+                    <select name="consulation">
                       <option value="Consulting Services Inquiry">Consulting Services Inquiry</option>
                       <option value="Product Information">Product Information</option>
                       <option value="Other">Other</option>
@@ -496,26 +765,26 @@
                 </div>
                 <div class="cell medium-12">
                   <label>Company Name
-                    <input type="text" placeholder="Enter your company name">
+                    <input type="text" name="company_name" placeholder="Enter your company name">
                   </label>
                 </div>
                 <div class="cell medium-12">
                   <label>Message
-                    <textarea placeholder="Enter your message"></textarea>
+                    <textarea name="message" placeholder="Enter your message"></textarea>
                   </label>
                 </div>
                 <div class="cell medium-12">
                   <label>Additional Details
-                    <textarea placeholder="Enter additional details"></textarea>
+                    <textarea name="additional_details" placeholder="Enter additional details"></textarea>
                   </label>
                 </div>
                 <div class="cell medium-12">
                   <label>Drop In Any Relevant Files
-                    <input type="file">
+                    <input type="file" name="rev_file">
                   </label>
                 </div>
                 <div class="cell medium-12">
-                  <input type="checkbox" required>
+                  <input type="checkbox" name="terms_agree" required>
                   <label>I agree to the <a href="#">Terms and Conditions</a></label>
                 </div>
                 <div class="cell medium-12">
@@ -689,17 +958,16 @@
   </div>
 
   </div>
-  <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
-  <script src="{% static 'js/vendor/what-input.js' %}"></script>
-  <script src="{% static 'js/vendor/foundation.min.js' %}"></script>
-  <script src="{% static 'js/vendor/dataTables.js' %}"></script>
-  <script src="{% static 'js/vendor/dataTables.foundation.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="{% static 'js/app.js' %}"></script>
-  <script src="{% static 'js/common_function.js' %}"></script>
-  <script src="{% static 'js/service_index.js' %}"></script>
-
 </body>
 
 </html>
+<script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+<script src="{% static 'js/vendor/what-input.js' %}"></script>
+<script src="{% static 'js/vendor/foundation.min.js' %}"></script>
+<script src="{% static 'js/vendor/dataTables.js' %}"></script>
+<script src="{% static 'js/vendor/dataTables.foundation.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/common_function.js' %}"></script>
+
 {% endblock %}

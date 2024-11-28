@@ -79,8 +79,8 @@ class ContactUs(models.Model):
     relevantFile = models.FileField(upload_to='contactus_file/', null=True, blank=True)
     createdDate = models.DateTimeField(default=now, editable=False)
 
-    def __str__(self):
-        return str(self.email)
+    # def __str__(self):
+    #     return str(self.email)
 
     class Meta:
         db_table = "tbl_contact_us"

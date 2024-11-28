@@ -239,15 +239,25 @@ import json
 # with open('/etc/email-config.json') as config_file:
 #     config = json.load(config_file)
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# # EMAIL_HOST_USER = config['EMAIL_USER']
+# # EMAIL_HOST_PASSWORD = config['EMAIL_PASSWORD']
+# EMAIL_HOST_USER = "vcmauryatest@gmail.com"
+# EMAIL_HOST_PASSWORD = "fkpdcgdknjkrzxyg"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = 'email@anangtawiah.com'
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = config['EMAIL_USER']
-# EMAIL_HOST_PASSWORD = config['EMAIL_PASSWORD']
-EMAIL_HOST_USER = "vcmauryatest@gmail.com"
-EMAIL_HOST_PASSWORD = "fkpdcgdknjkrzxyg"
+EMAIL_HOST = 'smtp.office365.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'email@anangtawiah.com'
+EMAIL_HOST_USER = 'info@gearthinc.com'
+EMAIL_HOST_PASSWORD = 'grmsxytsrwncfzyc'
+DEFAULT_FROM_EMAIL = 'info@gearthinc.com'
+
 
 CLICKY_SITE_ID = '101338144'
 GOOGLE_ANALYTICS_GTAG_PROPERTY_ID = 'G-193VHLM9YJ'
