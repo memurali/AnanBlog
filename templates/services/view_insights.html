@@ -16,18 +16,19 @@
 </head>
 
 <body>
-  <h2 class="text-center header_style">Service Category Table</h2>
+  <h2 class="text-center header_style">Insights & Resources Table</h2>
 
 
   <div class="grid-container-fluid client_view">
-    <table id="CategoryTable" class="display bordered-table" style="width:100%">
+    <table id="InsightsTable" class="display bordered-table" style="width:100%">
       <thead>
         <tr>
-          <th>Category ID</th>
-          <th>Category Name</th>
+          <th>S.NO</th>
+          <th>Service Name</th>
+          <th>Service Heading</th>
           <th>Description</th>
-          <th>CaseStudy Link</th>
-          <th>Insights Link</th>
+          <th>Preview</th>
+          <th>Buy</th>
           <th>Edit</th>
           <th>Delete</th>
 
@@ -42,23 +43,36 @@
     <div class="grid-container-fluid">
       <div class="grid-x grid-margin-x align-center">
         <div class="input_width">
-          <h4 class="header_style">Update Category Details</h4>
+          <h4 class="header_style">Update Insights & Resources</h4>
           <div class="form-container">
-            <form action="" id="edit_category_form">
-              <input type="hidden" name="category_id" id="category_id">
+            <form action="" id="edit_insights_resource_form" style="margin-top: 3rem;">
+              <input type="hidden" name="insight_id" id="insight_id">
 
-              <label>Category Name
-                <input type="text" name="category_name" id="category_name">
+              <label class="header_style">Service Name
+                  <select name="Serice_Category" id="Serice_Category"></select>
               </label>
-              <label>Description
-                <textarea type="text" name="Description" id="description"></textarea>
+
+              <label class="header_style">Service Heading
+                  <input type="text" name="service_heading" id="service_heading">
+              </label>
+
+              <label class="header_style">Description
+                  <textarea type="text" name="Description" id="description"></textarea>
+              </label>
+
+              <label class="header_style">Preview
+                  <textarea type="text" name="Preview" id="Preview"></textarea>
+              </label>
+
+              <label class="header_style">Buy
+                  <input type="text" name="buy" id="buy"></textarea>
               </label>
 
               <div class="buttons">
-                <button type="submit" class="button success">Update</button>
-                <button type="reset" class="button secondary">Reset</button>
+                  <button type="submit" class="button success">Add</button>
+                  <button type="reset" class="button secondary">Reset</button>
               </div>
-            </form>
+          </form>
           </div>
         </div>
       </div>

@@ -1,0 +1,81 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Service Category</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/service_app.css' %}">
+
+
+    <style>
+        .custom-select {
+            position: relative;
+            width: 300px;
+        }
+
+        #search_bar {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #dropdown {
+            position: relative;
+            height: 200px;
+            top: -17px;
+        }
+
+        #dropdown option {
+            padding: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="grid-container-fluid client_view">
+        <div class="grid-x grid-margin-x align-center">
+            <div class="input_width">
+                <h4 class="header_style">Add Case Study</h4>
+                <div class="form-container">
+                    <form action="" id="case_study_form" style="margin-top: 3rem;">
+                        <label class="header_style">Serice Category
+                            <select name="Serice_Category" id="Serice_Category"></select>
+                        </label>
+
+                        <label class="header_style">Case Study Name
+                            <input type="text" name="case_study" id="case_study">
+                        </label>
+
+                        <label class="header_style">Description
+                            <textarea type="text" name="Description" id="description"></textarea>
+                        </label>
+
+                        <label class="header_style">Upolad Image</label>
+                            <label for="images" class="button small expanded">Upload</label>
+                            <input type="file" id="images" name="images"
+                              class="show-for-sr">
+
+                        <div class="buttons">
+                            <button type="submit" class="button success">Add</button>
+                            <button type="reset" class="button secondary">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/service_index.js' %}"></script>
+
+{% endblock %}

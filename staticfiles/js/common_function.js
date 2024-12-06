@@ -73,7 +73,7 @@ $.ajax({
                 var Main_toggle = ''
 
                 insightshtml = `<div class="cell medium-6">
-                <p>+ <a class="insights_resources" value="${service.category}">${service.category}</a></p>
+                <p class="toggle-icon">+ <a class="insights_resources" value="${service.category}">${service.category}</a></p>
                 </div>`
 
                 Main_toggle = `<a href="Service_details?${service.category}">${service.category}</a>`
@@ -125,10 +125,33 @@ $.ajax({
 })
 
 // Service  Insights And Resources 
-$(document).on('click', '.insights_resources', function () {
-    var value = $(this).attr('value');
-    console.log(value); // Outputs "Technology"
-    $('.service_insights').css('display', 'block')
-    $('.insight_service_name').html(`<span>:: </span>` + value + " Insights And Resources")
+// $(document).on('click', '.insights_resources', function () {
+//     var value = $(this).attr('value');
+//     console.log(value); // Outputs "Technology"
+//     $('.service_insights').css('display', 'block')
+//     $('.insight_service_name').html(`<span>:: </span>` + value + " Insights And Resources")
 
+// });
+
+// Add click event listener for toggle functionality
+$('.insight-inner-sec').on('click', '.toggle-icon', function () {
+    // Revert all other elements to "+"
+    $('.toggle-icon').each(function () {
+        if ($(this).text().trim().startsWith('-')) {
+            $(this).html(`+ <a class="insights_resources" value="${$(this).find('.insights_resources').attr('value')}">${$(this).find('.insights_resources').text()}</a>`);
+
+        }
+    });
+
+    // Toggle the clicked element
+    var text = $(this).text().trim();
+    console.log(text,">>>>>>>>>>>>>")
+    if (text.startsWith('+')) {
+        var updatedText = text.replace('+', ''); 
+        $(this).html(`- <a class="insights_resources" value="${$(this).find('.insights_resources').attr('value')}">${$(this).find('.insights_resources').text()}</a>`);
+
+    }
+
+    $('.service_insights').css('display', 'block')
+    $('.insight_service_name').html(`<span>:: </span>` + updatedText + " Insights And Resources")
 });

@@ -3,38 +3,13 @@ import json
 from django.db.models import Max, Count
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import ServiceCategory
+from .models import *
 from django.db import connection
+from django.core.files.storage import default_storage
+
 
 
 # Create your views here.
-def Add_service(request):
-    return render(request, 'services/Add_service.html')
-
-def View_service(request):
-    return render(request, 'services/view_services.html')
-
-def Service_index(request):
-    return render(request, 'services/Service_index.html')
-
-def Service_details(request):
-    return render(request, 'services/Service_details.html')
-
-# Blogs 
-def blogs(request):
-    return render(request, 'Blogs/blog.html')
-
-def blogs_details(request):
-    return render(request, 'Blogs/blog-detail.html')
-
-# About 
-
-def about(request):
-    return render(request, 'about/about.html')
-
-def contactus(request):
-    return render(request, 'about/contactus.html')
-
 @csrf_exempt
 def CategoryDetails(request):
     if request.method == 'POST':
@@ -142,7 +117,6 @@ def CategoryDetails(request):
     # Handle invalid request methods
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-
 def getcategory(request):
     try:
         # Initialize a cursor to execute raw SQL
@@ -167,9 +141,9 @@ def getcategory(request):
 def findServiceDescription(request):
     try:
         # Initialize a cursor to execute raw SQL
-        category = request.POST.get('category')
+        service_id = request.POST.get('service_id')
         cursor = connection.cursor()
-        cursor.execute(f"""SELECT * FROM "tbl_ServiceCategory" where category = '{category}' """)
+        cursor.execute(f"""SELECT * FROM "tbl_ServiceCategory" where category = '{service_id}' """)
         columns = [col[0] for col in cursor.description]
         location_list = [
             dict(zip(columns, row))
@@ -179,8 +153,248 @@ def findServiceDescription(request):
         return JsonResponse({'u_id': location_list}, safe=False)
 
     except Exception as e:
-        # Log the error (Optional)
         print(f"Error: {str(e)}")
-
-        # Return an error message in case of failure
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def CaseStudyDetails(request):
+    if request.method == 'POST':
+        Service_name = request.POST.get('Serice_Category')
+        CaseStudyName = request.POST.get('case_study')
+        Description = request.POST.get('Description')
+        images = request.FILES.getlist('images')
+
+        if not CaseStudyName:
+            return JsonResponse({'error': 'CaseStudy name is required'})
+
+        # Get the max `service_id` and calculate the next ID
+        max_cs_id = CaseStudy.objects.aggregate(Max('cs_id'))['cs_id__max']
+        new_cs_id = max_cs_id + 1 if max_cs_id else 1
+
+        existing_casestudy = CaseStudy.objects.filter(service=Service_name, CaseStudyName=CaseStudyName).exists()
+        if existing_casestudy:
+            return JsonResponse({'message': 'CaseStudy already exists for this Service'})
+        
+        saved_files = []
+        for image in images:
+            file_path = default_storage.save(f'Case_study/{image.name}', image)
+            saved_files.append(file_path)
+
+        try:
+            Service = ServiceCategory.objects.get(service_id=Service_name)
+        except ServiceCategory.DoesNotExist:
+            return JsonResponse({'error': 'Service Category does not exist'})
+                
+        
+        # Create the new category
+        CaseStudy.objects.create(
+            cs_id=new_cs_id,
+            service=Service,
+            CaseStudyName=CaseStudyName,
+            Description = Description,
+            Images = saved_files[0]
+        )
+
+        return JsonResponse({'message': 'Case Study created successfully'})
+
+
+    elif request.method == 'GET':
+        try:
+            cs_id = request.GET.get('id')
+            if cs_id:
+                categories = CaseStudy.objects.get(cs_id=cs_id)
+                service = categories.service  # Assuming Location_id is a ForeignKey to tbllocation
+                categories_data = {
+                    'cs_id': categories.cs_id,
+                    'service': service,
+                    'Casestudy': categories.CaseStudyName,
+                    'Description': categories.Description,
+                    'Image': categories.Images}
+                return JsonResponse({'casestudy': categories_data})
+            else:
+                categories = list(CaseStudy.objects.all().values())
+                return JsonResponse({'casestudy': categories}, status=200)
+
+        except Exception as e:
+            # Log the error for debugging
+            print(f"An error occurred while retrieving categories: {e}")
+            return JsonResponse({'error': 'An error occurred while retrieving CaseStudyName'}, status=500)
+        
+
+    elif request.method == 'PUT':
+        try:
+            # Parse the JSON data sent with the PUT request
+            data = json.loads(request.body)
+            category_id = data.get('id')
+            new_category_name = data.get('category_name')
+            Description = data.get('Description')
+
+            if not category_id or not new_category_name:
+                return JsonResponse({'error': 'service_id and category are required'}, status=400)
+
+            # Retrieve the category to update
+            category = ServiceCategory.objects.filter(service_id=category_id).first()
+
+            if not category:
+                return JsonResponse({'error': 'Category not found'}, status=404)
+
+            # Update the category name
+            category.category = new_category_name
+            category.Description = Description
+            category.save()
+
+            return JsonResponse({'message': 'Category updated successfully'}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+        except Exception as e:
+            # Log the error for debugging
+            print(f"An error occurred: {e}")
+            return JsonResponse({'error': 'An error occurred while updating the category'}, status=500)
+        
+
+    elif request.method == 'DELETE':
+        try:
+            # Parse the JSON data sent with the DELETE request
+            data = json.loads(request.body)
+            category_id = data.get('id')
+            print(category_id,".........")
+            category = ServiceCategory.objects.filter(service_id=category_id).first()
+            category.delete()
+            return JsonResponse({'message': 'Case Study deleted successfully'}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+        except Exception as e:
+            # Log the error for debugging
+            print(f"An error occurred: {e}")
+            return JsonResponse({'error': 'An error occurred while deleting the category'}, status=500)
+
+
+    # Handle invalid request methods
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+@csrf_exempt
+def InsightsDetails(request):
+    if request.method == 'POST':
+        Service_name = request.POST.get('Serice_Category')
+        service_heading = request.POST.get('service_heading')
+        Description = request.POST.get('Description')
+        Preview =  request.POST.get('Preview')
+        buy =  request.POST.get('buy')
+
+
+        # Get the max `service_id` and calculate the next ID
+        max_insight_id = Insights.objects.aggregate(Max('insight_id'))['insight_id__max']
+        new_insight_id = max_insight_id + 1 if max_insight_id else 1
+
+        existing_casestudy = Insights.objects.filter(service=Service_name, ServiceHeading=service_heading).exists()
+        if existing_casestudy:
+            return JsonResponse({'message': 'Insights already exists for this Service'})
+      
+        try:
+            Service = ServiceCategory.objects.get(service_id=Service_name)
+        except ServiceCategory.DoesNotExist:
+            return JsonResponse({'error': 'Service Category does not exist'})
+                
+        
+        # Create the new category
+        Insights.objects.create(
+            insight_id=new_insight_id,
+            service=Service,
+            ServiceHeading=service_heading,
+            Description = Description,
+            Preview = Preview,
+            Buy = buy,
+        )
+
+        return JsonResponse({'message': 'Insights & Resources created successfully'})
+
+
+    elif request.method == 'GET':
+        try:
+            insight_id = request.GET.get('id')
+            if insight_id:
+                categories = Insights.objects.get(insight_id=insight_id)
+                service = categories.service  # Assuming Location_id is a ForeignKey to tbllocation
+                categories_data = {
+                    'insight_id': categories.insight_id,
+                    'service_id': service,
+                    'ServiceHeading': categories.ServiceHeading,
+                    'Description': categories.Description,
+                    'Preview': categories.Preview,
+                    'Buy': buy}
+                return JsonResponse({'insights': categories_data})
+            else:
+                categories = list(Insights.objects.all().values())
+                return JsonResponse({'insights': categories}, status=200)
+
+        except Exception as e:
+            # Log the error for debugging
+            print(f"An error occurred while retrieving categories: {e}")
+            return JsonResponse({'error': 'An error occurred while retrieving CaseStudyName'}, status=500)
+        
+
+    elif request.method == 'PUT':
+        try:
+            # Parse the JSON data sent with the PUT request
+            data = json.loads(request.body)
+            print(data,">>>>>>>>>>>>>>>")
+            category_id = data.get('id')
+            service = data.get('Serice_Category')
+            ServiceHeading = data.get('ServiceHeading')
+            Description = data.get('Description')
+            Preview = data.get('Preview')
+            Buy = data.get('buy')
+
+            # Retrieve the category to update
+            category = Insights.objects.filter(insight_id=category_id).first()
+
+            if not category:
+                return JsonResponse({'error': 'Category not found'}, status=404)
+
+            # Update the category name
+            
+            category.service = service
+            category.ServiceHeading = ServiceHeading
+            category.Description = Description
+            category.Preview = Preview
+            category.Buy = Buy
+
+            category.save()
+
+            return JsonResponse({'message': 'Insights updated successfully'}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+        except Exception as e:
+            # Log the error for debugging
+            print(f"An error occurred: {e}")
+            return JsonResponse({'error': 'An error occurred while updating the category'}, status=500)
+        
+
+    elif request.method == 'DELETE':
+        try:
+            # Parse the JSON data sent with the DELETE request
+            data = json.loads(request.body)
+            service_id = data.get('id')
+            category = Insights.objects.filter(insight_id=service_id).first()
+            category.delete()
+            return JsonResponse({'message': 'Insights deleted successfully'}, status=200)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+        except Exception as e:
+            # Log the error for debugging
+            print(f"An error occurred: {e}")
+            return JsonResponse({'error': 'An error occurred while deleting the category'}, status=500)
+
+
+    # Handle invalid request methods
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
