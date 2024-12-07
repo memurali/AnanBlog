@@ -8,14 +8,23 @@ $('#category_form').on('submit', function (e) {
         data: formdata,
         success: function (res) {
             if (res['message'] == 'Category created successfully') {
+                Swal.fire({
+                    icon: "success",
+                    title: res['message'],
+                });
                 $('#category_form').trigger('reset')
                 window.location.href = "view_form";
+            }
+            else if (res['message'] == 'Category already exists'){
+                Swal.fire({
+                    icon: "error",
+                    title: res['message'],
+                });
             }
         },
     })
 })
 
-fetchcategory()
 
 function fetchcategory() {
     $.ajax({
@@ -47,7 +56,7 @@ function fetchcategory() {
     })
 }
 
-
+// Edit Services 
 function editcategory(categoryID) {
     $.ajax({
         url: `CategoryDetails?id=${categoryID}`,
@@ -66,7 +75,6 @@ function editcategory(categoryID) {
     })
 }
 
-
 $('#edit_category_form').on('submit', function (e) {
     e.preventDefault();
     var formdata = {
@@ -84,18 +92,13 @@ $('#edit_category_form').on('submit', function (e) {
         .then(response => response.json())
         .then(res => {
             if (res['message'] == 'Category updated successfully') {
-                fetchcategory();
                 Swal.fire({
                     icon: "success",
                     title: res['message'],
                 });
-                $('#edit_category_form').trigger('reset')
-                var modal = $('#edit_offCanvas');
-                if (modal.length) {
-                    $(document).foundation()
-                    modal.foundation('close');
-                };
-                window.location.href = "view_form";
+                // $('#edit_category_form').trigger('reset')
+                fetchcategory()
+                // window.location.href = "view_form";
 
             } else if (res['message'] == 'Category Name already exists') {
                 Swal.fire({
@@ -106,7 +109,7 @@ $('#edit_category_form').on('submit', function (e) {
         })
 });
 
-
+// Delete Services 
 function deletecategory(cat_tId) {
     Swal.fire({
         title: "Are you sure?",
@@ -126,12 +129,12 @@ function deletecategory(cat_tId) {
                 }),
                 success: function (res) {
                     if (res['message'] === 'Category deleted successfully') {
-                        fetchcategory();
                         Swal.fire({
                             title: "Deleted!",
                             text: "Category deleted successfully.",
                             icon: "success"
                         }).then(() => {
+                            fetchcategory()
                             window.location.href = "view_form";
                         });
                     } else {
@@ -194,10 +197,16 @@ $(document).ready(function () {
             contentType: false, // Required for FormData
             success: function (res) {
                 if (res['message'] == 'Case Study created successfully') {
+                    Swal.fire({
+                        icon: "success",
+                        title: res['message'],
+                    });
                     fetchCaseStudy()
-                    alert('Case study added successfully!');
                 } else if (res['message'] == 'CaseStudy already exists for this Service') {
-                    alert(res['message']);
+                    Swal.fire({
+                        icon: "error",
+                        title: res['message'],
+                    });
                 }
             },
             error: function (xhr, status, error) {
@@ -207,7 +216,6 @@ $(document).ready(function () {
         });
     });
 });
-fetchCaseStudy()
 
 const findServiceName = (serviceId, callback) => {
     if (!serviceId) {
@@ -300,10 +308,16 @@ $('#insights_resource_form').on('submit', function (e) {
         data: formData,
         success: function (res) {
             if (res['message'] == 'Insights & Resources created successfully') {
-                fetchInsights()
-                alert('Case study added successfully!');
+                Swal.fire({
+                    icon: "success",
+                    title: res['message'],
+                });
+                fetchInsights();
             } else if (res['message'] == 'Insights already exists for this Service') {
-                alert(res['message']);
+                Swal.fire({
+                    icon: "error",
+                    title: res['message'],
+                });
             }
         },
         error: function (xhr, status, error) {
@@ -364,21 +378,20 @@ function fetchInsights() {
     });
 }
 
-
+// Edit Insights 
 function editInsights(InsightsID) {
     $.ajax({
         url: `InsightsDetails?id=${InsightsID}`,
         type: "GET",
         success: function (res) {
-            console.log(res,">>>>>>>>>>>")
             if (res.insights) {
                 var category = res.insights;
-                console.log(category, "............")
-                $('#service_id').val(category.service_id);
-                $('#ServiceHeading').val(category.ServiceHeading);
-                $('#Description').val(category.Description);
-                $('#Preview').val(category.Preview);
-                $('#Buy').val(category.Buy);
+                $('#insight_id').val(category.insight_id)
+                $('#Serice_Category').val(category.service_id);
+                $('#edit_service_heading').val(category.ServiceHeading);
+                $('#edit_description').val(category.Description);
+                $('#edit_Preview').val(category.Preview);
+                $('#edit_buy').val(category.Buy);
 
             } else {
                 console.error("Case Study not found");
@@ -391,12 +404,12 @@ function editInsights(InsightsID) {
 $('#edit_insights_resource_form').on('submit', function (e) {
     e.preventDefault();
     var formdata = {
-        'id': $('#insight_id').val(),
-        'Serice_Category': $('#Serice_Category').val(),
-        'service_heading': $('#service_heading').val(),
-        'Description': $('#description').val(),
-        'Preview': $('#Preview').val(),
-        'buy': $('#buy').val(),
+        'id': parseInt($('#insight_id').val()),
+        'Serice_Category': parseInt($('#Serice_Category').val()),
+        'service_heading': $('#edit_service_heading').val(),
+        'Description': $('#edit_description').val(),
+        'Preview': $('#edit_Preview').val(),
+        'buy': $('#edit_buy').val(),
     }
     fetch('InsightsDetails', {
             method: 'PUT',
@@ -408,19 +421,12 @@ $('#edit_insights_resource_form').on('submit', function (e) {
         .then(response => response.json())
         .then(res => {
             if (res['message'] == 'Insights updated successfully') {
-                fetchcategory();
                 Swal.fire({
                     icon: "success",
                     title: res['message'],
                 });
+                fetchInsights();
                 $('#edit_insights_resource_form').trigger('reset')
-                var modal = $('#edit_offCanvas');
-                if (modal.length) {
-                    $(document).foundation()
-                    modal.foundation('close');
-                };
-                // window.location.href = "view_form";
-
             } else if (res['message'] == 'Insights already exists') {
                 Swal.fire({
                     icon: "error",
@@ -430,7 +436,7 @@ $('#edit_insights_resource_form').on('submit', function (e) {
         })
 });
 
-
+// Delete Insights 
 function deleteInsights(cat_tId) {
     Swal.fire({
         title: "Are you sure?",
@@ -450,13 +456,13 @@ function deleteInsights(cat_tId) {
                 }),
                 success: function (res) {
                     if (res['message'] === 'Insights deleted successfully') {
-                        fetchcategory();
                         Swal.fire({
                             title: "Deleted!",
                             text: res['message'],
                             icon: "success"
                         }).then(() => {
                             // window.location.href = "view_form";
+                            fetchInsights();
                         });
                     } else {
                         Swal.fire({
@@ -480,4 +486,6 @@ function deleteInsights(cat_tId) {
 
 $(document).ready(function () {
     fetchInsights()
+    fetchcategory()
+    fetchCaseStudy()
 })

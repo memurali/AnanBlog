@@ -17,7 +17,7 @@ def CategoryDetails(request):
         Description = request.POST.get('Description')
 
         if not category_name:
-            return JsonResponse({'error': 'Category name is required'}, status=400)
+            return JsonResponse({'error': 'Category name is required'})
 
         try:
             # Get the max `service_id` and calculate the next ID
@@ -26,7 +26,7 @@ def CategoryDetails(request):
 
             # Check if the category already exists
             if ServiceCategory.objects.filter(category=category_name).exists():
-                return JsonResponse({'error': 'Category already exists'}, status=400)
+                return JsonResponse({'message': 'Category already exists'})
             
             # Create the new category
             ServiceCategory.objects.create(
@@ -35,7 +35,7 @@ def CategoryDetails(request):
                 Description = Description
             )
 
-            return JsonResponse({'message': 'Category created successfully'}, status=201)
+            return JsonResponse({'message': 'Category created successfully'})
 
         except Exception as e:
             # Log the error for debugging
@@ -55,7 +55,7 @@ def CategoryDetails(request):
                 return JsonResponse({'categories': categories_data})
             else:
                 categories = list(ServiceCategory.objects.all().values())
-                return JsonResponse({'categories': categories}, status=200)
+                return JsonResponse({'categories': categories})
 
         except Exception as e:
             # Log the error for debugging
@@ -71,11 +71,18 @@ def CategoryDetails(request):
             new_category_name = data.get('category_name')
             Description = data.get('Description')
 
-            if not category_id or not new_category_name:
-                return JsonResponse({'error': 'service_id and category are required'}, status=400)
+            try:
+                category = ServiceCategory.objects.get(service_id=category_id)  # Use ORM to fetch the instance
+            except Insights.DoesNotExist:
+                return JsonResponse({'error': 'Insight not found'}, status=404)
+                        
+            existing_insights = ServiceCategory.objects.filter(service_id=category_id, category=new_category_name, Description=Description).exists()
+            if existing_insights:
+                return JsonResponse({'message': 'Category Name already exists'})
+        
 
-            # Retrieve the category to update
-            category = ServiceCategory.objects.filter(service_id=category_id).first()
+            if not category_id or not new_category_name:
+                return JsonResponse({'error': 'service_id and category are required'})
 
             if not category:
                 return JsonResponse({'error': 'Category not found'}, status=404)
@@ -85,10 +92,10 @@ def CategoryDetails(request):
             category.Description = Description
             category.save()
 
-            return JsonResponse({'message': 'Category updated successfully'}, status=200)
+            return JsonResponse({'message': 'Category updated successfully'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON data'})
 
         except Exception as e:
             # Log the error for debugging
@@ -103,10 +110,10 @@ def CategoryDetails(request):
             category_id = data.get('id')
             category = ServiceCategory.objects.filter(service_id=category_id).first()
             category.delete()
-            return JsonResponse({'message': 'Category deleted successfully'}, status=200)
+            return JsonResponse({'message': 'Category deleted successfully'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON data'})
 
         except Exception as e:
             # Log the error for debugging
@@ -116,6 +123,7 @@ def CategoryDetails(request):
 
     # Handle invalid request methods
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
 
 def getcategory(request):
     try:
@@ -214,7 +222,7 @@ def CaseStudyDetails(request):
                 return JsonResponse({'casestudy': categories_data})
             else:
                 categories = list(CaseStudy.objects.all().values())
-                return JsonResponse({'casestudy': categories}, status=200)
+                return JsonResponse({'casestudy': categories})
 
         except Exception as e:
             # Log the error for debugging
@@ -231,7 +239,7 @@ def CaseStudyDetails(request):
             Description = data.get('Description')
 
             if not category_id or not new_category_name:
-                return JsonResponse({'error': 'service_id and category are required'}, status=400)
+                return JsonResponse({'error': 'service_id and category are required'})
 
             # Retrieve the category to update
             category = ServiceCategory.objects.filter(service_id=category_id).first()
@@ -244,10 +252,10 @@ def CaseStudyDetails(request):
             category.Description = Description
             category.save()
 
-            return JsonResponse({'message': 'Category updated successfully'}, status=200)
+            return JsonResponse({'message': 'Category updated successfully'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON data'})
 
         except Exception as e:
             # Log the error for debugging
@@ -263,10 +271,10 @@ def CaseStudyDetails(request):
             print(category_id,".........")
             category = ServiceCategory.objects.filter(service_id=category_id).first()
             category.delete()
-            return JsonResponse({'message': 'Case Study deleted successfully'}, status=200)
+            return JsonResponse({'message': 'Case Study deleted successfully'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON data'})
 
         except Exception as e:
             # Log the error for debugging
@@ -280,6 +288,7 @@ def CaseStudyDetails(request):
 
 @csrf_exempt
 def InsightsDetails(request):
+    cursor = connection.cursor()
     if request.method == 'POST':
         Service_name = request.POST.get('Serice_Category')
         service_heading = request.POST.get('service_heading')
@@ -317,66 +326,71 @@ def InsightsDetails(request):
 
     elif request.method == 'GET':
         try:
-            insight_id = request.GET.get('id')
+            insight_id = request.GET.get('id')            
             if insight_id:
-                categories = Insights.objects.get(insight_id=insight_id)
-                service = categories.service  # Assuming Location_id is a ForeignKey to tbllocation
-                categories_data = {
-                    'insight_id': categories.insight_id,
-                    'service_id': service,
-                    'ServiceHeading': categories.ServiceHeading,
-                    'Description': categories.Description,
-                    'Preview': categories.Preview,
-                    'Buy': buy}
-                return JsonResponse({'insights': categories_data})
-            else:
-                categories = list(Insights.objects.all().values())
-                return JsonResponse({'insights': categories}, status=200)
+                try:
+                    insights = Insights.objects.get(insight_id=insight_id)  # Use ORM to fetch the instance
+                    categories_data = {
+                        'insight_id': insights.insight_id,
+                        'service_id': str(insights.service_id),
+                        'ServiceHeading': insights.ServiceHeading,
+                        'Description': insights.Description,
+                        'Preview': insights.Preview,
+                        'Buy': insights.Buy,
+                    }
 
+                    return JsonResponse({'insights': categories_data})
+                except Insights.DoesNotExist:
+                    return JsonResponse({'error': 'Insight not found'}, status=404)
+            else:
+                # Return all insights if no specific ID is requested
+                categories = list(Insights.objects.all().values())
+                return JsonResponse({'insights': categories})
         except Exception as e:
-            # Log the error for debugging
-            print(f"An error occurred while retrieving categories: {e}")
-            return JsonResponse({'error': 'An error occurred while retrieving CaseStudyName'}, status=500)
-        
+            return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
+
 
     elif request.method == 'PUT':
         try:
             # Parse the JSON data sent with the PUT request
             data = json.loads(request.body)
-            print(data,">>>>>>>>>>>>>>>")
             category_id = data.get('id')
             service = data.get('Serice_Category')
-            ServiceHeading = data.get('ServiceHeading')
+            ServiceHeading = data.get('service_heading')
             Description = data.get('Description')
             Preview = data.get('Preview')
             Buy = data.get('buy')
 
-            # Retrieve the category to update
-            category = Insights.objects.filter(insight_id=category_id).first()
-
-            if not category:
-                return JsonResponse({'error': 'Category not found'}, status=404)
-
-            # Update the category name
+            # Retrieve the category to update using Django's ORM
+            try:
+                category = Insights.objects.get(insight_id=category_id)  # Use ORM to fetch the instance
+            except Insights.DoesNotExist:
+                return JsonResponse({'error': 'Insight not found'}, status=404)
             
-            category.service = service
+            existing_insights = Insights.objects.filter(service=service, ServiceHeading=ServiceHeading).exists()
+            if existing_insights:
+                return JsonResponse({'message': 'Insights already exists'})
+        
+            # 
+            # Update the category's fields
+            category.service_id = service  # Assuming service is an ID (ForeignKey)
             category.ServiceHeading = ServiceHeading
             category.Description = Description
             category.Preview = Preview
             category.Buy = Buy
 
+            # Save the updated category
             category.save()
-
-            return JsonResponse({'message': 'Insights updated successfully'}, status=200)
+            return JsonResponse({'message': 'Insights updated successfully'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON data'})
 
         except Exception as e:
             # Log the error for debugging
             print(f"An error occurred: {e}")
             return JsonResponse({'error': 'An error occurred while updating the category'}, status=500)
-        
+    
 
     elif request.method == 'DELETE':
         try:
@@ -385,10 +399,10 @@ def InsightsDetails(request):
             service_id = data.get('id')
             category = Insights.objects.filter(insight_id=service_id).first()
             category.delete()
-            return JsonResponse({'message': 'Insights deleted successfully'}, status=200)
+            return JsonResponse({'message': 'Insights deleted successfully'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON data'})
 
         except Exception as e:
             # Log the error for debugging
