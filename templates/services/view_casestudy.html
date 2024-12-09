@@ -8,16 +8,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Serices</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/foundation.css' %}">
-  <link rel="stylesheet" type="text/css"  href="{% static 'css/foundation-icons/foundation-icons.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/foundation-icons/foundation-icons.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.foundation.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="{% static 'css/service_app.css' %}">
 
 </head>
 
+
+<style>
+  .expanded {
+    display: block;
+    width: 150px;
+    margin: 10px 3.5rem 20px auto;
+    /* Aligns to the right */
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #searchInput {
+    color: white;
+    background-color: #333;
+    border: 1px solid #ccc;
+  }
+
+  #searchInput::placeholder {
+    color: white;
+  }
+
+</style>
+
 <body>
   <h2 class="text-center header_style">Case Study Table</h2>
 
+  <div class="grid-x grid-margin-x align-right">
+    <div class="form-container">
+      <input type="search" class="expanded" id="searchInput" placeholder="Search...">
+    </div>
+  </div>
 
   <div class="grid-container-fluid client_view">
     <table id="CaseStudyTable" class="display bordered-table" style="width:100%">
@@ -42,20 +74,30 @@
     <div class="grid-container-fluid">
       <div class="grid-x grid-margin-x align-center">
         <div class="input_width">
-          <h4 class="header_style">Update Category Details</h4>
+          <h4>Update Case Study</h4>
           <div class="form-container">
-            <form action="" id="edit_category_form">
-              <input type="hidden" name="category_id" id="category_id">
+            <form action="" id="edit_case_study_form" style="margin-top: 3rem;">
+              <input type="hidden" name="case_id" id="case_id">
 
-              <label>Category Name
-                <input type="text" name="category_name" id="category_name">
+              <label>Serice Category
+                <select name="Serice_Category" id="Serice_Category"></select>
               </label>
+
+              <label>Case Study Name
+                <input type="text" name="case_study" id="case_study">
+              </label>
+
               <label>Description
                 <textarea type="text" name="Description" id="description"></textarea>
               </label>
 
+              <!-- <label>Upolad Image</label>
+                      <label for="images" class="button small expanded">Upload</label>
+                      <input type="file" id="images" name="images" disabled
+                        class="show-for-sr"> -->
+
               <div class="buttons">
-                <button type="submit" class="button success">Update</button>
+                <button type="submit" class="button success">Add</button>
                 <button type="reset" class="button secondary">Reset</button>
               </div>
             </form>
@@ -74,8 +116,7 @@
 <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
 <script src="{% static 'js/vendor/what-input.js' %}"></script>
 <script src="{% static 'js/vendor/foundation.min.js' %}"></script>
-<script src="{% static 'js/vendor/dataTables.js' %}"></script>
-<script src="{% static 'js/vendor/dataTables.foundation.js' %}"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'js/app.js' %}"></script>
 <script src="{% static 'js/service_index.js' %}"></script>

@@ -22,11 +22,13 @@ urlpatterns = [
     path('view_CaseStudy', render.view_CaseStudy, name='view_CaseStudy'),
     path('CaseStudyDetails', views.CaseStudyDetails, name='CaseStudyDetails'),
     path('findServiceID', get_ids.findServiceID, name='findServiceID'),
+    path('getCaseStudy', get_ids.getCaseStudy, name='getCaseStudy'),
 
     # Add Insights 
     path('Add_Insights', render.Add_Insights, name='Add_Insights'),
     path('view_Insights', render.view_Insights, name='view_Insights'),
     path('InsightsDetails', views.InsightsDetails, name='InsightsDetails'),
+    path('getInsights', get_ids.getInsights, name='getInsights'),
 
 
     # Blogs 

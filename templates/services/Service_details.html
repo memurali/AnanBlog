@@ -19,6 +19,7 @@
         rel="stylesheet">
 </head>
 
+
 <body>
 
     <header>
@@ -163,7 +164,7 @@
                 <h4 class="service_heading">Consulting service</h4>
                 <div class="heading-underline"></div>
                 <div class="description"></div>
-                
+
             </div>
             <div class="cell medium-6"></div>
         </div>
@@ -200,51 +201,10 @@
 
     </div>
     <section class="case-studies-section grid-container">
-        <div class="grid-x">
-            <div class="cell small-12">
-                <h3 class="section-header">Featured Case Studies And Insights</h3>
-            </div>
-
-            <!-- Case Study 1 -->
-            <div class="cell small-12 medium-6">
-                <div class="case-study1">
-                    <h1 class="case-title">Sirio Be</h1>
-                    <p class="case-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc
-                        ullamcorper
-                        condimentum augue nisi ornare vitae viverra justo.</p>
-                    <a href="#" class="case-link">Case Study</a>
-                </div>
-            </div>
-
-
-
-            <div class="cell small-12 medium-6">
-                <div class="case-study-title1">
-                    <h1 class="case-title">rati</h1>
-                </div>
-            </div>
+        <div class="cell small-12">
+            <h3 class="section-header">Featured Case Studies And Insights</h3>
         </div>
-        <div class="grid-x">
-
-            <!-- Case Study 1 -->
-            <div class="cell small-12 medium-6">
-                <div class="case-study1">
-                    <h1 class="case-title">Sirio Be</h1>
-                    <p class="case-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit nunc
-                        ullamcorper
-                        condimentum augue nisi ornare vitae viverra justo.</p>
-                    <a href="#" class="case-link">Case Study</a>
-                </div>
-            </div>
-
-
-
-            <div class="cell small-12 medium-6">
-                <div class="case-study-title2">
-                    <h1 class="case-title">rati</h1>
-                </div>
-            </div>
-        </div>
+        <div id="Case_study"></div>
 
         <!-- Tags (Vertical on the left side) -->
         <div class="tags">
@@ -272,84 +232,20 @@
         </div>
         <!-- Latest Technology Insights and Resources -->
         <div class="grid-x grid-margin-x latest-tec section-p service_insights" style="display: none;">
-    
-          <div class="cell small-12 medium-12">
-            <h3 class="insight_service_name"></h3>
-                <div class="grid-x grid-margin-x">
-                    <div class="cell small-12 medium-4 latest-tec__blog">
-                        <div class="latest-tec__num">
-                            <h4>1</h4>
-                        </div>
-                        <h4>/ Heading /</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada pulvinar vel et non mattis
-                            purus.</p>
-                        <button class="button">Preview</button>
-                        <button class="button secondary">Buy</button>
-                    </div>
-                    <div class="cell small-12 medium-4 latest-tec__blog">
-                        <div class="latest-tec__num">
-                            <h4>2</h4>
-                        </div>
-                        <h4>/ Heading /</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada pulvinar vel et non mattis
-                            purus.</p>
-                        <button class="button">Preview</button>
-                        <button class="button secondary">Buy</button>
-                    </div>
-                    <div class="cell small-12 medium-4 latest-tec__blog">
-                        <div class="latest-tec__num">
-                            <h4>3</h4>
-                        </div>
-                        <h4>/ Heading /</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada pulvinar vel et non mattis
-                            purus.</p>
-                        <button class="button">Preview</button>
-                        <button class="button secondary">Buy</button>
-                    </div>
-                </div>
 
-                <div class="grid-x grid-margin-x">
-                    <div class="cell small-12 medium-4 latest-tec__blog">
-                        <div class="latest-tec__num">
-                            <h4>4</h4>
-                        </div>
-                        <h4>/ Heading/</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada pulvinar vel et non mattis
-                            purus.</p>
-                        <button class="button">Preview</button>
-                        <button class="button secondary">Buy</button>
-                    </div>
-                    <div class="cell small-12 medium-4 latest-tec__blog">
-                        <div class="latest-tec__num">
-                            <h4>5</h4>
-                        </div>
-                        <h4>/ Heading /</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada pulvinar vel et non mattis
-                            purus.</p>
-                        <button class="button">Preview</button>
-                        <button class="button secondary">Buy</button>
-                    </div>
-                    <div class="cell small-12 medium-4 latest-tec__blog">
-                        <div class="latest-tec__num">
-                            <h4>6</h4>
-                        </div>
-                        <h4>/ Heading /</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada pulvinar vel et non mattis
-                            purus.</p>
-                        <button class="button">Preview</button>
-                        <button class="button secondary">Buy</button>
-                    </div>
-                </div>
+            <div class="cell small-12 medium-12">
+                <h3 class="insight_service_name"></h3>
+                <div id="insights_table"></div>
 
                 <nav aria-label="Pagination">
                     <ul class="pagination">
-                        <li class="pagination-previous disabled"><i class="fa-thin fa-less-than"></i></li>
+                        <!-- <li class="pagination-previous disabled"><i class="fa-thin fa-less-than"></i></li>
                         <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
                         <li><a href="#" aria-label="Page 2">2</a></li>
                         <li><a href="#" aria-label="Page 3">3</a></li>
                         <li><a href="#" aria-label="Page 4">4</a></li>
                         <li class="pagination-next"><a href="#" aria-label="Next page"><i
-                                    class="fa-thin fa-greater-than"></i></a></li>
+                                    class="fa-thin fa-greater-than"></i></a></li> -->
                     </ul>
                 </nav>
             </div>

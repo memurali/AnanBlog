@@ -209,67 +209,93 @@ def CaseStudyDetails(request):
 
     elif request.method == 'GET':
         try:
-            cs_id = request.GET.get('id')
+            cs_id = request.GET.get('id')            
             if cs_id:
-                categories = CaseStudy.objects.get(cs_id=cs_id)
-                service = categories.service  # Assuming Location_id is a ForeignKey to tbllocation
-                categories_data = {
-                    'cs_id': categories.cs_id,
-                    'service': service,
-                    'Casestudy': categories.CaseStudyName,
-                    'Description': categories.Description,
-                    'Image': categories.Images}
-                return JsonResponse({'casestudy': categories_data})
+                try:
+                    Case_Study = CaseStudy.objects.get(cs_id=cs_id)  # Use ORM to fetch the instance
+                    categories_data = {
+                        'cs_id': Case_Study.cs_id,
+                        'service_id': str(Case_Study.service_id),
+                        'CaseStudyName': Case_Study.CaseStudyName,
+                        'Description': Case_Study.Description,
+                        'Images': Case_Study.Images,
+                    }
+
+                    return JsonResponse({'casestudy': categories_data})
+                except CaseStudy.DoesNotExist:
+                    return JsonResponse({'error': 'Insight not found'}, status=404)
             else:
+                # Return all insights if no specific ID is requested
                 categories = list(CaseStudy.objects.all().values())
                 return JsonResponse({'casestudy': categories})
-
         except Exception as e:
-            # Log the error for debugging
-            print(f"An error occurred while retrieving categories: {e}")
-            return JsonResponse({'error': 'An error occurred while retrieving CaseStudyName'}, status=500)
+            return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
         
 
     elif request.method == 'PUT':
         try:
-            # Parse the JSON data sent with the PUT request
+            # Parse the data from request
             data = json.loads(request.body)
-            category_id = data.get('id')
-            new_category_name = data.get('category_name')
-            Description = data.get('Description')
+            print(data,"............")
+            case_id = data.get('id')
+            service_id = data.get('Serice_Category')
+            CaseStudyName = data.get('CaseStudyName')
+            description = data.get('Description')
 
-            if not category_id or not new_category_name:
-                return JsonResponse({'error': 'service_id and category are required'})
+            # Fetch the uploaded files
+            images = request.FILES.getlist('images')
+
+            # if not all([case_id, service, case_study_name, description]):
+            #     return JsonResponse({'error': 'Missing required fields'}, status=400)
+            
+            print(f"Parsed data: {service_id}, {CaseStudyName}, {description}")
+
 
             # Retrieve the category to update
-            category = ServiceCategory.objects.filter(service_id=category_id).first()
+            try:
+                category = CaseStudy.objects.get(cs_id=case_id)
+            except CaseStudy.DoesNotExist:
+                return JsonResponse({'error': 'Case Study not found'}, status=404)
 
-            if not category:
-                return JsonResponse({'error': 'Category not found'}, status=404)
+            # Check for existing case study
+            
+            existing_case = CaseStudy.objects.filter(service=service_id, CaseStudyName=CaseStudyName,Description=description).exclude(cs_id=case_id).exists()
+            if existing_case:
+                return JsonResponse({'message': 'Case Study already exists'})
 
-            # Update the category name
-            category.category = new_category_name
-            category.Description = Description
+            # Save uploaded images
+            saved_files = []
+            for image in images:
+                file_path = default_storage.save(f'Case_study/{image.name}', image)
+                saved_files.append(file_path)
+
+            # Update fields
+            category.service_id = service_id
+            category.CaseStudyName = CaseStudyName
+            category.Description = description
+
+            # Handle Images (assuming Images is a ManyToManyField or FileField)
+            if saved_files:
+                category.Images.clear()  # Clear old images if needed
+                for file_path in saved_files:
+                    category.Images.create(file_path=file_path)
             category.save()
 
-            return JsonResponse({'message': 'Category updated successfully'})
+            return JsonResponse({'message': 'Case Study updated successfully'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'})
-
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
         except Exception as e:
-            # Log the error for debugging
             print(f"An error occurred: {e}")
-            return JsonResponse({'error': 'An error occurred while updating the category'}, status=500)
-        
+            return JsonResponse({'error': 'An error occurred while updating the Case Study'}, status=500)
+   
 
     elif request.method == 'DELETE':
         try:
             # Parse the JSON data sent with the DELETE request
             data = json.loads(request.body)
-            category_id = data.get('id')
-            print(category_id,".........")
-            category = ServiceCategory.objects.filter(service_id=category_id).first()
+            service_id = data.get('id')
+            category = CaseStudy.objects.filter(cs_id=service_id).first()
             category.delete()
             return JsonResponse({'message': 'Case Study deleted successfully'})
 

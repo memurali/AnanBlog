@@ -14,8 +14,7 @@ $('#category_form').on('submit', function (e) {
                 });
                 $('#category_form').trigger('reset')
                 window.location.href = "view_form";
-            }
-            else if (res['message'] == 'Category already exists'){
+            } else if (res['message'] == 'Category already exists') {
                 Swal.fire({
                     icon: "error",
                     title: res['message'],
@@ -246,7 +245,6 @@ const findServiceName = (serviceId, callback) => {
     });
 };
 
-
 function fetchCaseStudy() {
     $.ajax({
         url: 'CaseStudyDetails', // Endpoint for fetching case studies
@@ -297,6 +295,108 @@ function fetchCaseStudy() {
     });
 }
 
+// Edit Case Study 
+function editCasestudy(CSID) {
+    $.ajax({
+        url: `CaseStudyDetails?id=${CSID}`,
+        type: "GET",
+        success: function (res) {
+            if (res.casestudy) {
+                var casestudy = res.casestudy;
+                $('#case_id').val(casestudy.cs_id)
+                $('#Serice_Category').val(casestudy.service_id);
+                $('#case_study').val(casestudy.CaseStudyName);
+                $('#description').val(casestudy.Description);
+
+            } else {
+                console.error("Case Study not found");
+            }
+        }
+    })
+}
+
+
+$('#edit_case_study_form').on('submit', function (e) {
+    e.preventDefault();
+    var formdata = {
+        'id': parseInt($('#case_id').val()),
+        'Serice_Category': parseInt($('#Serice_Category').val()),
+        'CaseStudyName': $('#case_study').val(),
+        'Description': $('#description').val(),
+        // 'images': $('#images').val(),
+    }
+    fetch('CaseStudyDetails', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formdata)
+        })
+        .then(response => response.json())
+        .then(res => {
+            if (res['message'] == 'Case Study updated successfully') {
+                Swal.fire({
+                    icon: "success",
+                    title: res['message'],
+                });
+                fetchCaseStudy()
+                // $('#edit_insights_resource_form').trigger('reset')
+            } else if (res['message'] == 'Case Study already exists') {
+                Swal.fire({
+                    icon: "error",
+                    title: res['message'],
+                });
+            }
+        })
+});
+
+// Delete Services 
+function deleteStudy(CS_tId) {
+    Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'CaseStudyDetails',
+                type: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: CS_tId
+                }),
+                success: function (res) {
+                    if (res['message'] === 'Case Study deleted successfully') {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: res['message'],
+                            icon: "success"
+                        }).then(() => {
+                            fetchCaseStudy()
+                            // window.location.href = "view_form";
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: res['error'] || "An error occurred while deleting the Category.",
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "An error occurred: " + error,
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    });
+}
 
 // INsights &  Resources 
 $('#insights_resource_form').on('submit', function (e) {
@@ -327,7 +427,6 @@ $('#insights_resource_form').on('submit', function (e) {
     });
 });
 
-
 function fetchInsights() {
     $.ajax({
         url: 'InsightsDetails', // Endpoint for fetching case studies
@@ -341,14 +440,13 @@ function fetchInsights() {
 
             const insights = res.insights;
 
-            // Sort case studies by cs_id in ascending order
+            // Sort case studies by insight_id in ascending order
             insights.sort((a, b) => a.insight_id - b.insight_id);
 
             const tbody = $('#InsightsTable tbody');
             tbody.empty(); // Clear existing table rows
 
             insights.forEach(category => {
-
                 // Fetch the service name asynchronously
                 findServiceName(category.service_id, function (serviceName) {
                     // Generate a table row after fetching the service name
@@ -377,6 +475,16 @@ function fetchInsights() {
         }
     });
 }
+
+// Search Table 
+$(document).ready(function () {
+    $('#searchInput').on('keyup', function () {
+        const searchValue = $(this).val().toLowerCase(); // Get the search input in lowercase
+        $('#InsightsTable tbody tr, #CaseStudyTable tbody tr').each(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1);
+        });
+    });
+});
 
 // Edit Insights 
 function editInsights(InsightsID) {

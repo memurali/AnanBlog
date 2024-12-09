@@ -1,4 +1,3 @@
-
 // Get category 
 $.ajax({
     url: `getcategory`,
@@ -124,34 +123,208 @@ $.ajax({
     },
 })
 
-// Service  Insights And Resources 
-// $(document).on('click', '.insights_resources', function () {
-//     var value = $(this).attr('value');
-//     console.log(value); // Outputs "Technology"
-//     $('.service_insights').css('display', 'block')
-//     $('.insight_service_name').html(`<span>:: </span>` + value + " Insights And Resources")
-
-// });
 
 // Add click event listener for toggle functionality
 $('.insight-inner-sec').on('click', '.toggle-icon', function () {
-    // Revert all other elements to "+"
+    // Revert all other toggle-icon elements to "+"
     $('.toggle-icon').each(function () {
         if ($(this).text().trim().startsWith('-')) {
             $(this).html(`+ <a class="insights_resources" value="${$(this).find('.insights_resources').attr('value')}">${$(this).find('.insights_resources').text()}</a>`);
-
         }
     });
 
     // Toggle the clicked element
-    var text = $(this).text().trim();
-    console.log(text,">>>>>>>>>>>>>")
-    if (text.startsWith('+')) {
-        var updatedText = text.replace('+', ''); 
-        $(this).html(`- <a class="insights_resources" value="${$(this).find('.insights_resources').attr('value')}">${$(this).find('.insights_resources').text()}</a>`);
+    const text = $(this).text().trim();
+    let updatedText = text.replace('+', '').replace('-', '').trim();
 
+    if (text.startsWith('+')) {
+        $(this).html(`- <a class="insights_resources" value="${$(this).find('.insights_resources').attr('value')}">${$(this).find('.insights_resources').text()}</a>`);
     }
 
-    $('.service_insights').css('display', 'block')
-    $('.insight_service_name').html(`<span>:: </span>` + updatedText + " Insights And Resources")
+    // Show service insights
+    $('.service_insights').css('display', 'block');
+    $('.insight_service_name').html(`<span>:: </span>` + updatedText + " Insights And Resources");
 });
+
+// Ensure the click event for .insights_resources is bound only once
+$('.insight-inner-sec').off('click', '.insights_resources').on('click', '.insights_resources', function (e) {
+    e.preventDefault();
+    $('.insight_service_name').empty(); // Clear the previous insight name
+    $('#insights_table').empty(); // Clear the insights table if needed
+    const insightName = $(this).attr('value');
+    $('.insight_service_name').html(`<span>:: </span>${insightName} Insights And Resources`);
+    InsightTable(insightName);
+});
+
+
+// Case study 
+$.ajax({
+    url: `getCaseStudy`,
+    type: "POST",
+    data: {
+        'service_id': $('.service_name').text()
+    },
+    success: function (res) {
+        if (res.u_id && Array.isArray(res.u_id)) {
+            // Service id ASC order 
+            var services = res.u_id.sort((a, b) => a.service_id - b.service_id);
+
+            // Insights And Resources 
+            services.forEach(function (service) {
+                var CaseStudy = ''
+
+                CaseStudy = `<div class="grid-x">
+                        <div class="cell small-12 medium-6">
+                            <div class="case-study1">
+                                <h1 class="case-title">${service['CaseStudyName']}</h1>
+                                <p class="case-description">${service['Description']}</p>
+                                <a href="#" class="case-link">Case Study</a>
+                            </div>
+                        </div>
+
+                        <div class="cell small-12 medium-6">
+                            <div class="case-study-title1">
+                                <h1 class="case-title"><img src="/media/${service.Images.trim()}" alt="${service.Images}" class="thumbnail" style="width:80px; cursor:pointer;"></h1>
+                            </div>
+                        </div>
+                </div>`
+
+                $('#Case_study').append(CaseStudy);
+            })
+
+        } else {
+            console.error("Category not found or u_id is not an array");
+        }
+    }
+});
+
+function InsightTable(insightName) {
+    $.ajax({
+        url: `getInsights`,
+        type: "POST",
+        data: {
+            'service_id': insightName
+        },
+        success: function (res) {
+            if (res.u_id && Array.isArray(res.u_id)) {
+                var services = res.u_id.sort((a, b) => a.service_id - b.service_id);
+
+                const totalItems = services.length;
+                const itemsPerPage = 6;
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                $('#insights_table').empty(); // Clear existing data
+
+                // Show pagination if more than one page
+                if (totalPages > 1) {
+                    $('.pagination').show();
+                } else {
+                    $('.pagination').hide();
+                }
+
+                // Clear pagination controls to prevent duplicates
+                $('.pagination').empty();
+
+                // Add previous button
+                let paginationControls = `<li class="pagination-previous disabled"><i class="fa-thin fa-less-than"></i></li>`;
+
+                // Add page number buttons dynamically
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationControls += `<li><a href="#" class="page-btn" data-page="${i}" aria-label="Page ${i}">${i}</a></li>`;
+                }
+
+                // Add next button
+                paginationControls += `<li class="pagination-next"><a href="#" class="next-btn" aria-label="Next page"><i class="fa-thin fa-greater-than"></i></a></li>`;
+
+                // Append pagination controls to the container
+                $('.pagination').html(paginationControls);
+
+                // Render first page initially
+                renderPage(1, services, itemsPerPage);
+
+                // Handle page number click
+                $('.page-btn').on('click', function (e) {
+                    e.preventDefault();
+                    const page = $(this).data('page');
+                    renderPage(page, services, itemsPerPage);
+                    updatePagination(page, totalPages);
+                });
+
+                // Handle next button click
+                $('.next-btn').on('click', function (e) {
+                    e.preventDefault();
+                    const currentPage = parseInt($('.current').text().trim());
+                    const nextPage = currentPage + 1;
+                    if (nextPage <= totalPages) {
+                        renderPage(nextPage, services, itemsPerPage);
+                        updatePagination(nextPage, totalPages);
+                    }
+                });
+
+                // Handle previous button click
+                $('.pagination-previous').on('click', function (e) {
+                    e.preventDefault();
+                    const currentPage = parseInt($('.current').text().trim());
+                    const prevPage = currentPage - 1;
+                    if (prevPage > 0) {
+                        renderPage(prevPage, services, itemsPerPage);
+                        updatePagination(prevPage, totalPages);
+                    }
+                });
+
+                // Render page function
+                function renderPage(page, services, itemsPerPage) {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = page * itemsPerPage;
+                    const currentPageServices = services.slice(start, end);
+                    let row = `<div class="grid-x grid-margin-x">`;
+
+                    currentPageServices.forEach(function (service, index) {
+                        const serialNo = start + index + 1;
+
+                        const column = `
+                            <div class="cell small-12 medium-4 latest-tec__blog">
+                                <div class="latest-tec__num">
+                                    <h4>${serialNo}</h4>
+                                </div>
+                                <h4>/ ${service['ServiceHeading']} /</h4>
+                                <p>${service['Description']}</p>
+                                <button class="button">Preview</button>
+                                <button class="button secondary">Buy</button>
+                            </div>`;
+
+                        row += column;
+                    });
+
+                    row += `</div>`;
+                    $('#insights_table').html(row);
+                }
+
+                // Update pagination controls
+                function updatePagination(currentPage, totalPages) {
+                    $('.page-btn').removeClass('current');
+                    $(`.page-btn[data-page=${currentPage}]`).addClass('current');
+
+                    if (currentPage <= 1) {
+                        $('.pagination-previous').addClass('disabled');
+                    } else {
+                        $('.pagination-previous').removeClass('disabled');
+                    }
+
+                    if (currentPage >= totalPages) {
+                        $('.pagination-next').addClass('disabled');
+                    } else {
+                        $('.pagination-next').removeClass('disabled');
+                    }
+                }
+            } else {
+                console.error("Category not found or u_id is not an array");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error during AJAX request:", error);
+            alert("Failed to fetch insights. Please try again.");
+        }
+    });
+}
+
