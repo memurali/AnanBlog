@@ -4,6 +4,8 @@ from publications.models import Publication
 from blog.models import Blogs
 
 from django.utils.timezone import now
+from django.forms.models import model_to_dict
+
 
 
 class UserInfo(models.Model):
@@ -81,6 +83,11 @@ class ContactUs(models.Model):
 
     # def __str__(self):
     #     return str(self.email)
+    def __str__(self):
+        # Convert all fields of the model to a dictionary
+        fields = model_to_dict(self)
+        # Format the dictionary as a string
+        return f"ContactUs({', '.join(f'{key}={value}' for key, value in fields.items())})"
 
     class Meta:
         db_table = "tbl_contact_us"

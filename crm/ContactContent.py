@@ -10,6 +10,8 @@ def getContact(fetch_amount, page):
 
         cn = ContactUs.objects.all()
 
+        print(cn,">>>>>>>>>>>")
+
         cnt = 0
 
         if not cn:
@@ -86,6 +88,7 @@ def getContact(fetch_amount, page):
     else:
         contacts = ContactUs.objects.all().order_by("-id")[:5]
 
+    print(contacts,">>>>>>>>>>>>>>>")
     if not contacts:
         return ""
     else:

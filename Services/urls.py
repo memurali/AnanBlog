@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from . import render
 from . import get_ids
+from . import Login
 from base.views import commonViews
 
 
@@ -35,6 +36,13 @@ urlpatterns = [
     
     path('Blogs', render.blogs, name='blogs'),
     path('Blogs_details', render.blogs_details, name='blogs_details'),
+
+    # Login 
+    path('Login', render.Login, name='Login'),
+    path('login_view', Login.login_view, name='login_view'),
+    path('logout_view', Login.logout_view, name='logout_view'),
+    path('Register', render.Register, name='Register'),
+    path('signup_view', Login.signup_view, name='signup_view'),
 
     # ABout
     path('about', render.about, name='about'),

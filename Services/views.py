@@ -149,7 +149,7 @@ def getcategory(request):
 def findServiceDescription(request):
     try:
         # Initialize a cursor to execute raw SQL
-        service_id = request.POST.get('service_id')
+        service_id = request.POST.get('category')
         cursor = connection.cursor()
         cursor.execute(f"""SELECT * FROM "tbl_ServiceCategory" where category = '{service_id}' """)
         columns = [col[0] for col in cursor.description]

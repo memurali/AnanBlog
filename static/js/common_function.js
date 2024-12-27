@@ -105,6 +105,8 @@ let queryValue = queryString.substring(1);
 let value = queryValue.replaceAll('%20', ' ')
 $('.service_name,.service_heading,.service_tittle').html(value);
 
+console.log(value,".............")
+
 
 $.ajax({
     url: 'findServiceDescription',
@@ -119,6 +121,8 @@ $.ajax({
         description.forEach(function (desc) {
             temp += `<p>${desc.Description}</p>`
         })
+
+        console.log(temp,">>>>>>>>>>>")
         $('.description').html(temp)
     },
 })

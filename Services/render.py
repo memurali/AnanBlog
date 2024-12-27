@@ -1,14 +1,21 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+
 # Services 
+@login_required
 def Add_service(request):
     return render(request, 'services/Add_service.html')
 
+@login_required
 def View_service(request):
     return render(request, 'services/view_services.html')
 
+@login_required
 def Service_index(request):
     return render(request, 'services/Service_index.html')
 
+@login_required
 def Service_details(request):
     return render(request, 'services/Service_details.html')
 
@@ -28,9 +35,12 @@ def view_Insights(request):
     return render(request, 'services/view_insights.html')
 
 # Blogs 
+@login_required
 def blogs(request):
     return render(request, 'Blogs/blog.html')
 
+
+@login_required
 def blogs_details(request):
     return render(request, 'Blogs/blog-detail.html')
 
@@ -41,3 +51,9 @@ def about(request):
 
 def contactus(request):
     return render(request, 'about/contactus.html')
+
+def Login(request):
+    return render(request, 'Blogs/login.html')
+
+def Register(request):
+    return render(request, 'Blogs/Signup.html')

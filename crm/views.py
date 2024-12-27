@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.http import FileResponse
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail, EmailMessage
+from django.views.decorators.csrf import csrf_exempt
+
 
 from crm.ContactContent import getContact
 from crm.LeadsContent import getLeads
@@ -253,6 +255,8 @@ def create_invoice(request):
 
     return render(request, "crm/create-invoices.html", context)
 
+
+csrf_exempt
 def Login(request):
     context = {}
 
@@ -271,8 +275,10 @@ def Login(request):
         if request.POST.get('form_type', 1) == 'loginform':
             username = request.POST.get('username', 1)
             password = request.POST.get('password', 1)
+            print(username, password,">>>>>>>>>>>>>")
 
             user = authenticate(username=username, password=password)
+            # print(password,"..............")
 
             if user is not None:
                 auth_login(request, user)

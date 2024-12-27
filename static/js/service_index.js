@@ -45,7 +45,7 @@ function fetchcategory() {
                 <td>${category.category}</td>
                 <td>${category.Description}</td>
                 <td><a href="Add_CaseStudy">Add Form</a><br><a href="view_CaseStudy">View Tables</a></td>
-                <td><a href="Add_CaseStudy">Add Form</a><br><a href="view_CaseStudy">View Tables</a></td>
+                <td><a href="Add_Insights">Add Form</a><br><a href="view_Insights">View Tables</a></td>
                 <td><span class="fi-page-edit edit_icon" data-toggle="edit_offCanvas" onclick="editcategory(${category.service_id})"></span></td>
                 <td><span class="fi-trash delete_icon" onclick="deletecategory(${category.service_id})"></span></td>
             </tr>`;
